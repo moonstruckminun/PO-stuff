@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Mafia Theme Checking</title>
+		<!-- activate if you need jQuery
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		-->
+		<script type="text/javascript" src="http://dl.dropbox.com/u/10065307/Mafia/_js/themecheck.js"></script>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				font-family: 'trebuchet ms', tahoma, sans-serif;
+				background: #d1eaff;
+				font-size: 13px;
+				margin: 5px 0px 0px 5px;
+			}
+			h3 {
+				font-style: italic;
+				font-size: 20px
+			}
+			i {
+				font-size: 10px
+			}
+			textarea {
+				font-family: 'lucida console', monospace;
+				font-size: 13px;
+				border: #000 0px solid;
+				width: 100%
+			}
+			a {
+				color: #449;
+				text-decoration: none
+			}
+			a:hover {
+				color: #944
+			}
+			input {
+				width: 75px;
+				height: 30px;
+			}
+			#outputarea h2 {
+				color: #779;
+				margin-top: 8px
+			}
+			#outputarea li {
+				margin-left: 30px
+			}
+			#outputarea {
+				color: black;
+				text-align: left
+			}
+			#pagearea {
+				width: 50%
+			}
+		</style>
+	</head>
+	<body><center><div id="pagearea">
+		<form name="myform" action="" method="get">
+			<h3>Mafia Theme Checker (beta)</h3>
+			<p>(Please report any errors at the <a href='http://pokemon-online.eu/forums/showthread.php?14296-New-Mafia-Checker-%28Beta%29' target="_blank">Mafia Checker Thread</a>).<br/>
+			Paste your theme code below. <i>No URL support yet</i></p>
+			<textarea rows="24" cols="80" name="inputbox" id="pastefield"></textarea><br/>
+			<input type="button" name="button" value="Validate!" onclick="checkTheme(this.form.inputbox.value)"/>
+		</form>
+		<div id="outputarea">[no theme].</div></div></center>
+	</body>
+</html>
