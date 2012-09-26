@@ -6,16 +6,16 @@
 		<!-- activate if you need jQuery
 			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 		-->
-		<script type="text/javascript" src="_js/themecheck2.js"></script>
+		<script type="text/javascript" src="https://dl.dropbox.com/u/10065307/Mafia/_js/themecheck.js"></script>
         <script type="text/javascript">
             function tab(tab) {
                 document.getElementById("errors").style.display = "none";
-                document.getElementById("roles").style.display = "none";
+                //document.getElementById("roles").style.display = "none";
                 document.getElementById("sides").style.display = "none";
                 document.getElementById("priority").style.display = "none";
                 document.getElementById("spawn").style.display = "none";
                 document.getElementById("li_errors").setAttribute("class", "");
-                document.getElementById("li_roles").setAttribute("class", "");
+                //document.getElementById("li_roles").setAttribute("class", "");
                 document.getElementById("li_sides").setAttribute("class", "");
                 document.getElementById("li_priority").setAttribute("class", "");
                 document.getElementById("li_spawn").setAttribute("class", "");
@@ -200,14 +200,14 @@
             <div id="Tabs">
                 <ul>
                     <li id="li_errors" onclick="tab('errors')" class="active"><a>Errors</a></li>
-                    <li id="li_roles" onclick="tab('roles')"><a>Roles</a></li>
+                    <!-- <li id="li_roles" onclick="tab('roles')"><a>Roles</a></li> -->
                     <li id="li_sides" onclick="tab('sides')"><a>Sides</a></li>
                     <li id="li_priority" onclick="tab('priority')"><a>Priority</a></li>
                     <li id="li_spawn" onclick="tab('spawn')"><a>Spawn</a></li>
                 </ul>
                 <div id="Content_Area">
                     <div id="errors" style='display: block'>[no theme]</div>                    
-                    <div id="roles" style='display: none;'>[no theme]</div>
+                    <!-- <div id="roles" style='display: none;'>[no theme]</div> -->
                     <div id="sides" style='display: none;'>[no theme]</div>
                     <div id="priority" style='display: none;'>[no theme]</div>
                     <div id="spawn" style='display: none;'>[no theme]</div>
