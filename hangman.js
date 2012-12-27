@@ -5,10 +5,12 @@ module.exports = function () {
     var hangchan;
 
     var defaultMaster = "RiceKirby";
-    var defaultChannel = "Hangman Game";
+    var defaultChannel = "Hangman";
+    var defaultParts = 7;
     var minBodyParts = 5;
     var winnerDelay = 60;
     var answerDelay = 10;
+    var maxAnswers = 3;
 
     var host;
     var hostName;
@@ -23,6 +25,7 @@ module.exports = function () {
 
     var points;
     var misses;
+    var answers;
 
     this.guessCharacter = function (src, commandData) {
         if (sys.ip(src) === host) {
@@ -69,13 +72,12 @@ module.exports = function () {
 
         usedLetters.push(commandData.toLowerCase());
         sendChanHtmlAll(" ", hangchan);
-        sendChanHtmlAll("<font color='red'><timestamp/> <b>" + sys.name(src) + "</b> guessed <b>" + letter.toUpperCase() + "</b> and got it " + (correct ? "right":"wrong") + "!. <b>Current Word</b>: " + currentWord.join(" ") + "</font>", hangchan);
+        sendChanAll("±Guess: " + sys.name(src) + " guessed " + letter.toUpperCase() + " and got it " + (correct ? "right (" + p + " points)" :"wrong") + "! Current Word: " + currentWord.join(" ") + "", hangchan);
 
         if (currentWord.indexOf("_") === -1) {
             this.applyPoints(src, p + 2);
             sendChanAll("*** ************************************************************ ***", hangchan);
             sendChanAll("±Game: " + sys.name(src) + " completed the word '" + currentWord.join("") + "'!", hangchan);
-            sendChanAll("±Game: " + sys.name(src) + " received " + p + " point(s)!", hangchan);
             this.countPoints();
             sendChanAll("*** ************************************************************ ***", hangchan);
             sendChanHtmlAll(" ", hangchan);
@@ -85,8 +87,7 @@ module.exports = function () {
                 parts--;
             }
             if (parts > 0) {
-                sendChanHtmlAll("<font color='red'><timestamp/> [Hint: " + hint + "]  [Letters used: " +  usedLetters.map(function (x) { return x.toUpperCase(); }).join(", ") + "]  [Chances left: " + parts + "] </font>", hangchan);
-                sendChanAll("±Game: " + sys.name(src) + " received " + p + " point(s)!", hangchan);
+                sendChanAll("±Game: [Hint: " + hint + "]  [Letters used: " +  usedLetters.map(function (x) { return x.toUpperCase(); }).join(", ") + "]  [Chances left: " + parts + "] ", hangchan);
                 sendChanHtmlAll(" ", hangchan);
                 this.applyPoints(src, p);
                 SESSION.users(src).hangmanTime = (new Date()).getTime() + answerDelay * 1000;
@@ -113,17 +114,22 @@ module.exports = function () {
             sys.sendMessage(src, "±Game: You need to wait for another " + (Math.floor((SESSION.users(src).hangmanTime - now) / 1000) + 1) + " seconds before submitting another guess!", hangchan);
             return;
         }
+        if (sys.name(src) in answers && answers[sys.name(src)] >= maxAnswers) {
+            sys.sendMessage(src, "±Game: You can only use /a " + maxAnswers + " times!", hangchan);
+            return;
+        }
+        var ans = commandData.replace(/\-/g, " ").replace(/[^A-Za-z0-9\s']/g, "").replace(/^\s+|\s+$/g,'');
 
         sendChanHtmlAll(" ", hangchan);
-        sendChanHtmlAll("<font color='red'><timestamp/> <b>" + sys.name(src) + "</b> answered <b>" + commandData + "</b>!</font>", hangchan);
-        if (commandData.toLowerCase() === word.toLowerCase()) {
+        sendChanAll("±Game: " + sys.name(src) + " answered " + ans + "!", hangchan);
+        if (ans.toLowerCase() === word.toLowerCase()) {
             var p = 0, e;
             for (e in currentWord) {
                 if (currentWord[e] === "_") {
                     p++;
                 }
             }
-            p = Math.floor(p * 1.5) + (p === 1 ? 2 : 1);
+            p = Math.floor(p * 1.34);
             this.applyPoints(src, p);
 
             sendChanAll("*** ************************************************************ ***", hangchan);
@@ -133,7 +139,8 @@ module.exports = function () {
             sendChanHtmlAll(" ", hangchan);
         } else {
             this.addMiss(src);
-            sendChanHtmlAll("<font color='red'><timestamp/> <b>" + sys.name(src) + "'</b>s answer was wrong! The game continues!</font>", hangchan);
+            this.addAnswerUse(src);
+            sendChanAll("±Game: " + sys.name(src) + "'s answer was wrong! The game continues!", hangchan);
             sendChanHtmlAll(" ", hangchan);
             SESSION.users(src).hangmanTime = (new Date()).getTime() + answerDelay * 2000;
         }
@@ -170,19 +177,24 @@ module.exports = function () {
             sys.sendMessage(src, "±Game: You need to write a hint!", hangchan);
             return;
         }
-
+        a = a.replace(/\-/g, " ").replace(/[^A-Za-z0-9\s']/g, "").replace(/^\s+|\s+$/g,'').toLowerCase();
+        if (a.length > 60 || a.length < 4) {
+            sys.sendMessage(src, "±Game: Your answer cannot be longer than 60 characters or shorter than 4 characters!", hangchan);
+            return;
+        }
         hint = h;
-        word = a.toLowerCase();
-        parts = (p && parseInt(p, 10) > 0) ? parseInt(p, 10) : minBodyParts;
+        word = a;
+        parts = (p && parseInt(p, 10) > 0) ? parseInt(p, 10) : defaultParts;
         parts = (parts < minBodyParts) ? minBodyParts : parts;
         points = {};
         misses = {};
+        answers = {};
 
         usedLetters = [];
         currentWord = [];
         var e;
         for (e = 0; e < word.length; e++) {
-            if (word[e] === " ") {
+            if (word[e] === " " || word[e] === "-") {
                 currentWord.push("-");
             } else if (validCharacters.indexOf(word[e]) !== -1) {
                 currentWord.push("_");
@@ -213,6 +225,12 @@ module.exports = function () {
             misses[sys.name(src)] = 0;
         }
         misses[sys.name(src)] += 1;
+    };
+    this.addAnswerUse = function(src) {
+        if (!answers[sys.name(src)]) {
+            answers[sys.name(src)] = 0;
+        }
+        answers[sys.name(src)] += 1;
     };
     this.countPoints = function () {
         var maxPoints = 0, winners = [], w;
@@ -269,6 +287,26 @@ module.exports = function () {
         nextGame = (new Date()).getTime() + winnerDelay * 1000;
         this.resetTimers();
     };
+    this.passWinner = function(src, commandData) {
+        if (word !== undefined) {
+            sys.sendMessage(src, "A game is already running!", hangchan);
+            return;
+        }
+        if (sys.name(src) !== winner && hangman.authLevel(src) < 1) {
+            sys.sendMessage(src, "You are not the last winner or auth!", hangchan);
+            return;
+        }
+        if (hangman.authLevel(src)< 1 && (new Date()).getTime() > nextGame) {
+            sys.sendMessage(src, winnerDelay + " seconds already passed! Anyone can start a game now!", hangchan);
+            return;
+        }
+        if (sys.id(commandData) == undefined || !sys.isInChannel(sys.id(commandData), hangchan) || sys.name(sys.id(commandData)) == winner) {
+            sys.sendMessage(src, "You cannot pass start rights to this person!", hangchan);
+            return;
+        }
+        this.setWinner(sys.name(sys.id(commandData)));
+        sendChanAll("±Game: " + sys.name(src) + " has passed starting rights to " + commandData + "!", hangchan);
+    };
     this.endGame = function (src) {
         if (word) {
             sendChanHtmlAll(" ", hangchan);
@@ -297,6 +335,7 @@ module.exports = function () {
         sys.sendHtmlMessage(src, " ", hangchan);
         sys.sendHtmlMessage(src, "<font color='red'><b>Current Word</b>: " + currentWord.join(" ") + "</font>", hangchan);
         sys.sendHtmlMessage(src, "<font color='red'>[Hint: " + hint + "]  [Letters used: " +  usedLetters.map(function (x) { return x.toUpperCase(); }).join(", ") + "]  [Chances left: " + parts + "] </font>", hangchan);
+        sys.sendHtmlMessage(src, "<font color='red'>Current game started by " + hostName + "</font>", hangchan);
         sys.sendHtmlMessage(src, " ", hangchan);
     };
     this.showHelp = function (src) {
@@ -306,15 +345,21 @@ module.exports = function () {
             "±Goal: Your goal is to guess a word on a letter by letter basis. A hint and the number of characters will be provided as a help.",
             "±Goal: Whenever someone guess a letter correctly, that letter will be filled in the word.",
             "*** *********************************************************************** ***",
+            "±Actions: To see the current puzzle, type /view.",
             "±Actions: To guess a character, type /g [character]. For example, to guess F, type /g F.",
             "±Actions: If you think you already know the answer, you can use /a [answer] to submit a full answer.",
             "±Actions: If you guess wrong too many times, the host wins!",
             "*** *********************************************************************** ***",
             "±Hosting: To host a game, type /start Answer:Hint. The host can't guess or answer during their own game.",
             "±Hosting: You can also type /start Answer:Hint:Number to set how many wrong guesses must be made before you win (minimum of " + minBodyParts + ").",
-            "±Hosting: The winner of the previous game have priority for hosting the next game. If the winner doesn't start a new game within " + winnerDelay + " seconds, anyone can host.",
+            "±Hosting: The winner of the previous game has priority for hosting the next game, and may use /pass User to give that priority to another user.",
+            "±Hosting: If the user with hosting priority doesn't start a new game within " + winnerDelay + " seconds, anyone can host.",
             "*** *********************************************************************** ***",
-            "±Rules: Server rules apply in this channel too.",
+            "±Rules: Do not ask the person with hosting priority to use /pass so that you may host a game.",
+            "±Rules: Do not create inappropriate answers, hints or guesses.",
+            "±Rules: Do not complain if another user guesses a letter, word or answer before you do.",
+            "±Rules: Do not create an answer that is impossible for other people to guess, such as a personal nickname.",
+            "±Rules: All server rules apply in this channel too - type /rules to view them.",
             "*** *********************************************************************** ***",
             ""
         ];
@@ -331,6 +376,7 @@ module.exports = function () {
             sys.sendMessage(src, "chances: Set minimum number of chances for any game (currently set to " + minBodyParts + " chances). ", hangchan);
             sys.sendMessage(src, "delay: Set delay (in seconds) between each guess. Full answers take double the time (currently set to " + answerDelay + " seconds). ", hangchan);
             sys.sendMessage(src, "winner: Set how many seconds the winner of a game have to start a new one before anyone can start (currently set to " + winnerDelay + " seconds). ", hangchan);
+            sys.sendMessage(src, "answers: Set how many times each player can use /a (currently set to " + maxAnswers + " seconds). ", hangchan);
             sys.sendHtmlMessage(src, " ", hangchan);
             return;
         }
@@ -353,15 +399,20 @@ module.exports = function () {
             winnerDelay = val;
             sys.sendMessage(src, "±Game: Winner will have " + val + " second(s) to start a new game.", hangchan);
             break;
+        case "answers":
+            maxAnswers = val;
+            sys.sendMessage(src, "±Game: Players can use /a " + val + " time per game.", hangchan);
+            break;
         }
     };
-    this.commands = {
+    this.hangcommands = {
         user: {
             help: [this.showHelp, "For a how-to-play guide"],
             g: [this.guessCharacter, "To guess a letter."],
             a: [this.submitAnswer, "To answer the question."],
             view: [this.viewGame, "To view the current game's state."],
-            start: [this.startGame, "To start a new game of Hangman."]
+            start: [this.startGame, "To start a new game of Hangman."],
+            pass: [this.passWinner, "To pass start rights to someone else. "]
         },
         op: {
             end: [this.endGame, "To stop a game."]
@@ -384,14 +435,13 @@ module.exports = function () {
             } else {
                 command = message.substr(0).toLowerCase();
             }
-
-            if (command in hangman.commands.user) {
-                hangman.commands.user[command][0].call(hangman, src, commandData);
+            if (command in hangman.hangcommands.user) {
+                hangman.hangcommands.user[command][0].call(hangman, src, commandData);
                 return true;
             }
 
             if (sys.ip(src) === host && command === "end") {
-                hangman.commands.op[command][0].call(hangman, src, commandData);
+                hangman.hangcommands.op[command][0].call(hangman, src, commandData);
                 return true;
             }
 
@@ -399,8 +449,8 @@ module.exports = function () {
                 throw ("No valid command");
             }
 
-            if (command in hangman.commands.op) {
-                hangman.commands.op[command][0].call(hangman, src, commandData);
+            if (command in hangman.hangcommands.op) {
+                hangman.hangcommands.op[command][0].call(hangman, src, commandData);
                 return true;
             }
 
@@ -408,8 +458,8 @@ module.exports = function () {
                 throw ("No valid command");
             }
 
-            if (command in hangman.commands.admin) {
-                hangman.commands.admin[command][0].call(hangman, src, commandData);
+            if (command in hangman.hangcommands.admin) {
+                hangman.hangcommands.admin[command][0].call(hangman, src, commandData);
                 return true;
             }
 
@@ -453,9 +503,16 @@ module.exports = function () {
         }
         return false;
     };
+    this.afterChannelJoin = function(src, channel) {
+        if (channel == hangchan) {
+            hangman.viewGame(src);
+        }
+        return false;
+    };
     return {
         init: hangman.init,
         handleCommand: hangman.handleCommand,
-        beforeChannelJoin: hangman.beforeChannelJoin
+        beforeChannelJoin: hangman.beforeChannelJoin,
+        afterChannelJoin: hangman.afterChannelJoin
     };
 }();
