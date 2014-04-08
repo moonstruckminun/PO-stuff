@@ -24,6 +24,34 @@
                 document.getElementById("li_"+tab).setAttribute("class", "active");
             }
         </script>
+        <script type="text/javascript">
+            function hideGrey() {
+                var isHidden = document.getElementById("hide_check").checked == true;
+                var x = document.getElementsByClassName("hidelist");
+                var ele;
+                for (var i=0;i<x.length;i++) {
+                  ele = x[i];
+                  if (isHidden) {
+                    ele.style.display="none";
+                  } else {
+                    ele.style.display="list-item";
+                  }
+                  //txt = txt + x.elements[i].value + "<br>";
+                }
+                var x = document.getElementsByClassName("hideline");
+                var ele;
+                for (var i=0;i<x.length;i++) {
+                  ele = x[i];
+                  if (isHidden) {
+                    ele.style.display="none";
+                  } else {
+                    ele.style.display="inline";
+                  }
+                  //txt = txt + x.elements[i].value + "<br>";
+                }
+                //document.getElementById("demo").innerHTML=txt;
+            }
+        </script>
 		<style type="text/css">
 			* {
 				margin: 0;
@@ -58,6 +86,11 @@
 			input {
 				width: 75px;
 				height: 30px;
+			}
+			input[type='checkbox'] {
+				width: 12px;
+				height: 12px;
+                margin: 2px;
 			}
 			#Tabs #Content_Area h2 {
 				color: #779;
@@ -204,7 +237,9 @@
             </form>
             <!-- <div id="outputarea">[no theme].</div> -->
             <div id="Tabs">
-                <br>It's recommended that you write your own roles summary when you submit your theme. Please don't simply copy/paste it from here (you can still copy the Priority and Spawn lists).
+                <br>Please don't simply copy/paste the roles summary from here when submitting your theme for review (you can still copy the Priority and Spawn lists).
+                <!-- <input type="button" name="button" value="Hide" onclick="hideGrey()"/> -->
+                <br><input type="checkbox" id="hide_check" name="hide_check" value="false" onclick="hideGrey()">Hide hidden items<br>
                 <ul>
                     <li id="li_errors" onclick="tab('errors')" class="active"><a>Errors</a></li>
                     <li id="li_roles" onclick="tab('roles')"><a>Roles</a></li>
@@ -224,6 +259,4 @@
         <br>
         <br>
 	</body>
-    
 </html>
-
