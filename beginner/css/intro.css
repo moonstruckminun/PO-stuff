@@ -1,0 +1,352 @@
+.html
+{
+	background-color: #7F7F7F;
+}
+
+#page
+{
+	z-index: 1;
+	width: 810px;
+	min-height: 418px;
+	background-image: none;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #000000;
+	background-color: #FFFFFF;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px 20px 62px;
+}
+
+#u75-4
+{
+	z-index: 2;
+	width: 810px;
+	min-height: 42px;
+	border-style: none;
+	background-color: transparent;
+	line-height: 58px;
+	font-size: 48px;
+	text-align: center;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+}
+
+#u75-4:hover
+{
+	background-color: transparent;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 42px;
+	margin: 0px;
+}
+
+#u75-4:active
+{
+	background-color: transparent;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 42px;
+	margin: 0px;
+}
+
+#u1183
+{
+	z-index: 6;
+	width: 810px;
+	margin-top: 8px;
+	position: relative;
+}
+
+#pu83-6
+{
+	width: 0.01px;
+	position: relative;
+}
+
+#u83-6
+{
+	z-index: 43;
+	width: 160px;
+	min-height: 73px;
+	padding: 6px;
+	font-size: 36px;
+	color: #FFFFFF;
+	line-height: 43px;
+	text-align: center;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	font-weight: normal;
+	position: relative;
+	margin-right: -10000px;
+}
+
+.SectionBox
+{
+	border-style: none;
+	border-color: #000000;
+	background-color: #C1272D;
+}
+
+#pu81-4
+{
+	width: 0.01px;
+	padding-bottom: 0px;
+	position: relative;
+	margin-right: -10000px;
+	left: 179px;
+}
+
+#u81-4
+{
+	z-index: 7;
+	width: 623px;
+	min-height: 31px;
+	background-color: #F0F0F0;
+	color: #000000;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+	padding: 7px 4px 4px;
+}
+
+#u130-4
+{
+	z-index: 11;
+	width: 623px;
+	min-height: 9px;
+	color: #000000;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	margin-top: 8px;
+	position: relative;
+	padding: 7px 4px 4px;
+}
+
+#u1089
+{
+	z-index: 61;
+	width: 795px;
+	margin-left: 8px;
+	margin-top: 8px;
+	position: relative;
+}
+
+#u365
+{
+	z-index: 62;
+	width: 795px;
+	position: relative;
+	margin-right: -10000px;
+}
+
+#u94-4
+{
+	z-index: 64;
+	width: 189px;
+	min-height: 35px;
+	padding: 3px;
+	line-height: 14px;
+	font-size: 12px;
+	text-align: center;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+}
+
+#u95-4
+{
+	z-index: 68;
+	width: 171px;
+	min-height: 36px;
+	padding: 3px;
+	line-height: 14px;
+	font-size: 12px;
+	text-align: center;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+	left: 618px;
+}
+
+#pu109-4
+{
+	width: 0.01px;
+	margin-top: 8px;
+	position: relative;
+}
+
+#u109-4
+{
+	z-index: 49;
+	width: 68px;
+	min-height: 17px;
+	padding: 4px;
+	color: #FFFFFF;
+	text-align: center;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	font-weight: normal;
+	position: relative;
+	margin-right: -10000px;
+}
+
+.ListTitle
+{
+	border-style: none;
+	border-color: #000000;
+	background-color: #8CC63F;
+}
+
+#u111-4
+{
+	z-index: 15;
+	width: 726px;
+	min-height: 17px;
+	padding: 4px;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+	left: 76px;
+}
+
+.TextBox1,.List1
+{
+	border-style: none;
+	border-color: #000000;
+	background-color: #F0F0F0;
+}
+
+#u114-4
+{
+	z-index: 53;
+	width: 68px;
+	min-height: 17px;
+	padding: 4px;
+	color: #FFFFFF;
+	text-align: center;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	font-weight: normal;
+	position: relative;
+	margin-right: -10000px;
+}
+
+#u118-4
+{
+	z-index: 27;
+	width: 726px;
+	min-height: 17px;
+	padding: 4px;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+	left: 76px;
+}
+
+#u119-4
+{
+	z-index: 31;
+	width: 726px;
+	min-height: 13px;
+	padding: 4px;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	margin-left: 76px;
+	position: relative;
+}
+
+.List2
+{
+	border-style: none;
+	border-color: #000000;
+	background-color: #D7D7D7;
+}
+
+#u124-4
+{
+	z-index: 35;
+	width: 726px;
+	min-height: 13px;
+	padding: 4px;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	margin-left: 76px;
+	position: relative;
+}
+
+.List3
+{
+	border-style: none;
+	border-color: #000000;
+	background-color: #BEBEBE;
+}
+
+#pu114-4,#pu120-4
+{
+	width: 0.01px;
+	margin-top: 7px;
+	position: relative;
+}
+
+#u120-4
+{
+	z-index: 57;
+	width: 68px;
+	min-height: 17px;
+	padding: 4px;
+	color: #FFFFFF;
+	text-align: center;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	font-weight: normal;
+	position: relative;
+	margin-right: -10000px;
+}
+
+#u116-4
+{
+	z-index: 19;
+	width: 726px;
+	min-height: 17px;
+	padding: 4px;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+	left: 76px;
+}
+
+#u117-4
+{
+	z-index: 23;
+	width: 726px;
+	min-height: 13px;
+	padding: 4px;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	margin-left: 76px;
+	position: relative;
+}
+
+#u129-4
+{
+	z-index: 39;
+	width: 726px;
+	min-height: 13px;
+	padding: 4px;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	margin-left: 76px;
+	position: relative;
+}
+
+body
+{
+	padding-top: 35px;
+	padding-bottom: 36px;
+}
+
+#page .verticalspacer
+{
+	clear: both;
+}
+

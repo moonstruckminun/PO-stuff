@@ -1,0 +1,138 @@
+.html
+{
+	background-color: #7F7F7F;
+}
+
+#page
+{
+	z-index: 1;
+	width: 810px;
+	min-height: 418px;
+	background-image: none;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #000000;
+	background-color: #FFFFFF;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px 20px 62px;
+}
+
+#u1186
+{
+	z-index: 2;
+	width: 810px;
+	position: relative;
+}
+
+#u1069-4
+{
+	z-index: 110;
+	width: 155px;
+	min-height: 50px;
+	padding: 6px;
+	font-size: 36px;
+	color: #FFFFFF;
+	line-height: 43px;
+	text-align: center;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	font-weight: normal;
+	position: relative;
+}
+
+.SectionBox
+{
+	border-style: none;
+	border-color: #000000;
+	background-color: #C1272D;
+}
+
+#u1177
+{
+	z-index: 3;
+	width: 810px;
+	margin-top: 8px;
+	position: relative;
+}
+
+#u1073-4
+{
+	z-index: 4;
+	width: 802px;
+	min-height: 16px;
+	padding: 4px;
+	color: #FFFFFF;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+}
+
+.ListTitle
+{
+	border-style: none;
+	border-color: #000000;
+	background-color: #8CC63F;
+}
+
+#u1079-32
+{
+	z-index: 8;
+	width: 802px;
+	min-height: 12px;
+	color: #000000;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+	padding: 7px 4px 4px;
+}
+
+.TextBox1
+{
+	border-style: none;
+	border-color: #000000;
+	background-color: #F0F0F0;
+}
+
+#u1178
+{
+	z-index: 40;
+	width: 810px;
+	margin-top: 7px;
+	position: relative;
+}
+
+#u1082-4
+{
+	z-index: 41;
+	width: 802px;
+	min-height: 16px;
+	padding: 4px;
+	color: #FFFFFF;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+}
+
+#u1083-65
+{
+	z-index: 45;
+	width: 802px;
+	min-height: 12px;
+	color: #000000;
+	text-align: justify;
+	font-family: Geneva, Verdana, Lucida Sans, Lucida Sans Unicode, sans-serif;
+	position: relative;
+	padding: 7px 4px 4px;
+}
+
+body
+{
+	padding-top: 35px;
+	padding-bottom: 36px;
+}
+
+#page .verticalspacer
+{
+	clear: both;
+}
+
