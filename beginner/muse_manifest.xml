@@ -1,37 +1,29 @@
-<manifest alg="2" build="5" opt="false" iceEnabled="true">
+<manifest alg="2" build="5" opt="false" iceEnabled="false">
   <folder name="images">
-    <file name="phase_night.jpg" crc="4077104431" ref="phases:all"/>
-    <file name="next_arrow.png" crc="101122635" ref="phases:all"/>
-    <file name="phase_standby.jpg" crc="45666446" ref="phases:all"/>
-    <file name="phase_voting.jpg" crc="3945147611" ref="phases:all"/>
-    <file name="mafia_x_village.jpg" crc="362643596" ref="intro:all"/>
-    <file name="night_actions.jpg" crc="3890059087" ref="phases:all"/>
-    <file name="lynch_success.jpg" crc="256241266" ref="phases:all"/>
-    <file name="lynch_tie.jpg" crc="4137690566" ref="phases:all"/>
-    <file name="display_chat.jpg" crc="4172878926" ref="chat:all"/>
-    <file name="pm_pc.jpg" crc="139893790" ref="play:all"/>
-    <file name="pm_android.gif" crc="4254772305" ref="play:all"/>
+    <file name="phase_night.jpg" crc="4077104431" ref="index"/>
+    <file name="next_arrow.png" crc="101122635" ref="index"/>
+    <file name="phase_standby.jpg" crc="45666446" ref="index"/>
+    <file name="phase_voting.jpg" crc="3945147611" ref="index"/>
+    <file name="mafia_x_village.jpg" crc="362643596" ref="index"/>
+    <file name="night_actions.jpg" crc="3890059087" ref="index"/>
+    <file name="lynch_success.jpg" crc="256241266" ref="index"/>
+    <file name="lynch_tie.jpg" crc="4137690566" ref="index"/>
+    <file name="display_chat.jpg" crc="4172878926" ref="index"/>
+    <file name="pm_pc.jpg" crc="139893790" ref="index"/>
+    <file name="pm_android.gif" crc="4254772305" ref="index"/>
+    <file name="info_roles.png" crc="4026746283" ref="index"/>
+    <file name="info_claims.png" crc="3764275418" ref="index"/>
+    <file name="info_behavior.png" crc="3865068015" ref="index"/>
+    <file name="info_logic.png" crc="4088431158" ref="index"/>
   </folder>
   <folder name="css">
-    <file name="site_global.css" crc="3972547205"/>
-    <file name="index.css" crc="4254260795" ref="index"/>
-    <file name="phases.css" crc="3848615758" ref="phases"/>
-    <file name="intro.css" crc="307941480" ref="intro"/>
-    <file name="play.css" crc="216641515" ref="play"/>
-    <file name="chat.css" crc="3767066389" ref="chat"/>
-    <file name="extra.css" crc="372422084" ref="extra"/>
-    <file name="all.css" crc="3917912002" ref="all"/>
+    <file name="site_global.css" crc="361313535"/>
+    <file name="index.css" crc="287802470" ref="index"/>
   </folder>
   <folder name="scripts">
-    <file name="jquery-1.8.3.min.js" crc="3828297711" ref="index:intro:play:phases:chat:extra:all"/>
-    <file name="museutils.js" crc="3880880085" ref="index:intro:play:phases:chat:extra:all"/>
-    <file name="jquery.watch.js" crc="4199601726" ref="index:intro:play:phases:chat:extra:all"/>
+    <file name="jquery-1.8.3.min.js" crc="3828297711" ref="index"/>
+    <file name="museutils.js" crc="3880880085" ref="index"/>
+    <file name="jquery.watch.js" crc="4199601726" ref="index"/>
   </folder>
-  <file name="index.html" crc="249254599" mt="1401583082671" redirect="true"/>
-  <file name="intro.html" crc="8328960" mt="1401780221675" redirect="true"/>
-  <file name="play.html" crc="536154641" mt="1401780679965" redirect="true"/>
-  <file name="phases.html" crc="273705202" mt="1401780194555" redirect="true"/>
-  <file name="chat.html" crc="529151981" mt="1401780184645" redirect="true"/>
-  <file name="extra.html" crc="106374500" mt="1401780210025" redirect="true"/>
-  <file name="all.html" crc="4245519591" mt="1401781161210" redirect="true"/>
+  <file name="index.html" crc="522170896" mt="1403920735827" redirect="true"/>
 </manifest>
