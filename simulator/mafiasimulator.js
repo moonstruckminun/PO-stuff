@@ -1,6 +1,7 @@
 /*jshint "laxbreak":true,"shadow":true,"undef":true,"evil":true,"trailing":true,"proto":true,"withstmt":true*/
 /*global alert, document, sendToChat, Mafia, exports, mafiaChecker, mafiaStats*/
 var theme, mafia, sys, mafiabot, utilities, stats, checker, SESSION, script, timer, savedTicks, is_command, nonFlashing, html_escape,
+    ticks = 0,
     currentPlayer = null,
     channel = 0,
     mafiachan = 0,
@@ -304,6 +305,7 @@ function nextPhase() {
         document.getElementById("pauseButton").value = "Pause";
     }
     focusChat();
+    updatePlayerSelector();
 }
 function pauseGame() {
     if (mafia.state != "blank") {
@@ -323,7 +325,14 @@ function pauseGame() {
     focusChat();
 }
 function onTick() {
-    mafia.stepEvent();
+    if (mafia.state != "blank") {
+        mafia.stepEvent();
+        ticks += 1;
+        if (ticks >= 30) {
+            ticks = 0;
+            updatePlayerSelector();
+        }
+    }
 }
 
 
