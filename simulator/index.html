@@ -211,8 +211,8 @@
                 text-align: left;
                 padding: 5px 5px;
             }
-            #Tabs #Content_Area #errors #chat {
-				font-family: tahoma;
+            #Tabs #Content_Area #errors #chatArea #chat {
+                font-family: tahoma;
                 overflow-y: scroll;
                 overflow-x: hidden;
                 word-wrap: break-word;
@@ -225,9 +225,22 @@
                 margin: 3px 0px;
                 padding: 2px;
             }
+            #chatArea {
+                width: 85%;
+            }
+            #listArea {
+                width: 14%;
+                height: 90%;
+            }
             #Tabs #Content_Area #errors li {
 				margin-left: 30px
 			}
+            #playerSelect {
+                margin-top: 3px;
+                width: 100%;
+                height: 100%;
+                
+            }
             p { padding-left: 15px; }
 		</style>
 	</head>
@@ -248,18 +261,16 @@
             <!-- <div id="outputarea">[no theme].</div> -->
             <div id="Tabs">
                 <div id="Content_Area">
-                    <div id="errors" style='display: block'>
-                        <div id="chat" style='display: block'>
-                            
+                    <div id="errors" style='display: block; position:relative;'>
+                        <div id="listArea" style='display: inline; position:absolute; right: 5px'><select name="playerSelect" id="playerSelect" size="19" onchange="changePlayer()" style='display: inline;'></select></div>
+                        <div id="chatArea" style="position:relative;">
+                            <div id="chat" style='display: block'></div>
                         </div>
-                        <input type="text" name="chatMsg" id="chatbox" onkeydown="pressSend(event)" onkeyup="pressUp(event)" > <input type="button" name="sendChat" value="Send" onclick="sendInput()"/> 
-                        <input type="button" name="button" value="Pause" id="pauseButton" onclick="pauseGame()" disabled />
-                        <input type="button" name="button" value="Next Phase" id="nextButton" onclick="nextPhase()" disabled />
-                        <select name="playerSelect" id="playerSelect" onchange="changePlayer()">
-                            <!-- <option value="none">Pick a player</option>
-                            <option value="0">Pick a asd</option>
-                            <option value="1">Pick a dfg</option> -->
-                        </select> 
+                        <div id="inputArea">
+                            <input type="text" name="chatMsg" id="chatbox" onkeydown="pressSend(event)" onkeyup="pressUp(event)" > <input type="button" name="sendChat" value="Send" onclick="sendInput()"/>
+                            <input type="button" name="button" value="Pause" id="pauseButton" onclick="pauseGame()" disabled />
+                            <input type="button" name="button" value="Next Phase" id="nextButton" onclick="nextPhase()" disabled />
+                        </div>
                     </div>
                 </div> <!– End of Content_Area Div –>
             </div> <!– End of Tabs Div –>

@@ -102,6 +102,9 @@ function setPlayerSelector() {
         option = document.createElement("option");
         option.value = e;
         option.text = players[e].name;
+        if (e == 0) {
+            option.selected = true;
+        }
         sele.add(option);
     }
 }
