@@ -470,7 +470,7 @@ function System() {
                 return "isPolka";
             }
             for (var e = 0; e < players.length; e++) {
-                if (name.toLowerCase() == players[e].name.toLowerCase()){
+                if (typeof name == "string" && name.toLowerCase() == players[e].name.toLowerCase()){
                     return e;
                 }
             }
