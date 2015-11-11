@@ -164,7 +164,6 @@ function buildPicker(){
             break;
             case 2:
                 setForCustomBST(id);
-                return false;
             break;
             case 1:
                 if (theme.include.indexOf(num) !== -1) {
@@ -274,6 +273,15 @@ function markPokemon(pokeId) {
             icon.addClass("included");
         }
     } else {
+        if (theme.exclude.indexOf(pokemon[pokeId].index) !== -1) {
+            if (!icon.hasClass("excluded")) {
+                icon.addClass("excluded");
+            } 
+        } else {
+            if (icon.hasClass("excluded")) {
+                icon.removeClass("excluded");
+            }
+        }
         if (icon.hasClass("included")) {
             icon.removeClass("included");
         }
@@ -365,7 +373,7 @@ function importTheme(data) {
             obj.prop("checked", true);
         }
     });
-    boxes = $("input[type=checkbox][name=exclude]"), obj, type;
+    boxes = $("input[type=checkbox][name=exclude]");
     boxes.each(function(i){
         obj = $(this);
         obj.prop("checked", false);
@@ -382,10 +390,10 @@ function importTheme(data) {
     for (e in theme.customBST) {
         num = parseInt(e, 10);
         var id = species(num) + "-" + forme(num);
-        setForCustomBST(id, theme.customBST[e])
+        setForCustomBST(id, theme.customBST[e]);
     }
 }
 function exportTheme() {
     $("#outputOverlay").toggle();
-    $("#outputThemeField").val(JSON.stringify(theme));
+    $("#outputThemeField").val(JSON.stringify(theme, null, 4));
 }

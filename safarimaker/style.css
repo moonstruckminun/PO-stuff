@@ -51,7 +51,6 @@ html, body {
     padding: 6px;
 }
 .overlay > div.overlayWrapper > div.overlayWindow {
-    width: 400;
     background-color: #FFFAF5;
     border-radius: 12px;
     -webkit-border-radius: 12px;
