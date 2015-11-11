@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Safari Theme Maker</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script type="text/javascript" src="data.js"></script>
+		<script type="text/javascript" src="thememaker.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+        <div id='builder'>
+            <div class='builderField'> Name: <input id='themeName' type='field' value='None'> | 
+            BST Range: <input type='number' id='minbst' value='300' > ~ <input type='number' id='maxbst' value='601' > | 
+            <input type="button" name="toggleMega" value="Toggle Mega" onclick="hideMega()"/> | 
+            <input type="button" name="importButton" value="Import theme" onclick="showImportWindow()"/> | 
+            <input type="button" name="exportButton" value="Export theme" onclick="exportTheme()"/> |
+            <input type="button" name="clearButton" value="Reset" onclick="importTheme('{}')"/>
+            </div>
+            <div class='builderField'> Include Types: 
+                <input type="checkbox" name="include" value="Normal"> Normal |
+                <input type="checkbox" name="include" value="Fighting"> Fighting |
+                <input type="checkbox" name="include" value="Flying"> Flying |
+                <input type="checkbox" name="include" value="Poison"> Poison |
+                <input type="checkbox" name="include" value="Ground"> Ground |
+                <input type="checkbox" name="include" value="Rock"> Rock |
+                <input type="checkbox" name="include" value="Bug"> Bug |
+                <input type="checkbox" name="include" value="Ghost"> Ghost |
+                <input type="checkbox" name="include" value="Steel"> Steel |
+                <input type="checkbox" name="include" value="Fire"> Fire |
+                <input type="checkbox" name="include" value="Water"> Water |
+                <input type="checkbox" name="include" value="Grass"> Grass |
+                <input type="checkbox" name="include" value="Electric"> Electric |
+                <input type="checkbox" name="include" value="Ice"> Ice |
+                <input type="checkbox" name="include" value="Dragon"> Dragon |
+                <input type="checkbox" name="include" value="Dark"> Dark |
+                <input type="checkbox" name="include" value="Fairy"> Fairy </div>
+            <div class='builderField'> Exclude Types: 
+                <input type="checkbox" name="exclude" value="Normal"> Normal |
+                <input type="checkbox" name="exclude" value="Fighting"> Fighting |
+                <input type="checkbox" name="exclude" value="Flying"> Flying |
+                <input type="checkbox" name="exclude" value="Poison"> Poison |
+                <input type="checkbox" name="exclude" value="Ground"> Ground |
+                <input type="checkbox" name="exclude" value="Rock"> Rock |
+                <input type="checkbox" name="exclude" value="Bug"> Bug |
+                <input type="checkbox" name="exclude" value="Ghost"> Ghost |
+                <input type="checkbox" name="exclude" value="Steel"> Steel |
+                <input type="checkbox" name="exclude" value="Fire"> Fire |
+                <input type="checkbox" name="exclude" value="Water"> Water |
+                <input type="checkbox" name="exclude" value="Grass"> Grass |
+                <input type="checkbox" name="exclude" value="Electric"> Electric |
+                <input type="checkbox" name="exclude" value="Ice"> Ice |
+                <input type="checkbox" name="exclude" value="Dragon"> Dragon |
+                <input type="checkbox" name="exclude" value="Dark"> Dark |
+                <input type="checkbox" name="exclude" value="Fairy"> Fairy </div>
+            <div class='builderField'> Include Pokémon: <span id='includedPoke'></span></div>
+            <div class='builderField'> Exclude Pokémon: <span id='excludedPoke'></span></div>
+            <div class='builderField'> Custom BST: <div id='customBST'></div></div>
+        </div>
+        <div id='pokePicker'></div>
+        <div id='outputOverlay' class='overlay' style='display: none'>
+            <div class='overlayWrapper'>
+                <div class='overlayWindow' id='outputWindow'>
+                    <span class="closeButton" id="closeOutput">X</span>
+                    Theme: <br>
+                    <textarea rows="20" cols="60" id="outputThemeField"></textarea>
+                </div>
+            </div>
+        </div>
+        <div id='inputOverlay' class='overlay' style='display: none'>
+            <div class='overlayWrapper'>
+                <div class='overlayWindow' id='inputWindow'>
+                    <span class="closeButton" id="closeInput">X</span>
+                    Paste your theme here and press Load: <br>
+                    <form name="myform" action="" method="get">
+                        <textarea rows="20" cols="60" name='inputbox' id="inputThemeField"></textarea><br>
+                        <input type="button" name="loadButton" value="loadButton" onclick="importTheme(this.form.inputbox.value)"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+	</body>
+</html>
+
