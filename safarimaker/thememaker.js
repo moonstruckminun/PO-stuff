@@ -395,5 +395,5 @@ function importTheme(data) {
 }
 function exportTheme() {
     $("#outputOverlay").toggle();
-    $("#outputThemeField").val(JSON.stringify(theme, null, 4));
+    $("#outputThemeField").val(JSON.stringify(theme));
 }
