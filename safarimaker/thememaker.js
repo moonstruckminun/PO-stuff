@@ -291,7 +291,7 @@ function markPokemon(pokeId) {
 function validForTheme(pokeId) {
     var data = pokemon[pokeId];
     
-    if (data.bst > theme.maxBST && !(data.index in theme.customBST && theme.customBST[data.index] < theme.maxBST)) {
+    if (data.bst >= theme.maxBST && !(data.index in theme.customBST && theme.customBST[data.index] < theme.maxBST)) {
         return false;
     }
     if (theme.exclude.indexOf(data.index) !== -1) {
