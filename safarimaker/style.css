@@ -26,7 +26,7 @@ html, body {
 .customized {
     border: 1px solid magenta;
 }
-#minbst, #maxbst, .bstInput {
+#minbst, #maxbst, #themeIcon, .bstInput {
     width: 45px;
 }
 .custombst {

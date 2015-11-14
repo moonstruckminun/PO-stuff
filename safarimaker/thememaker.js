@@ -7,7 +7,8 @@ var theme = {
     exclude: [], //Pokémon that matches all of the previous criteria, but will be excluded anyway,
     customBST: {  }, //Makes a pokémon count as a different BST for this theme. In the example, Pokémon #289 (Slaking) will be considered a 600 BST Pokémon for this theme.
     minBST: 300, //Choose a different minimum BST for pokémon to spawn. Optional, defaults to 300.
-    maxBST: 601 //Choose a different maximum BST for pokémon to spawn. Optional, defaults to 600.
+    maxBST: 601, //Choose a different maximum BST for pokémon to spawn. Optional, defaults to 600.
+    icon: 0
 };
 var types = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy", "???"];
 /*
@@ -39,6 +40,12 @@ $(document).ready(function () {
     });
     $("#themeName").on("input", function(event) {
         theme.name = $(this).val();
+    });
+    $("#themeIcon").on("input", function(event) {
+        var val = parseInt($(this).val(), 10);
+        if (!isNaN(val)) {
+            theme.icon = val;
+        }
     });
     $("input[type=checkbox]").on("click", function(event) {
         var action = $(this).attr("name");
@@ -350,7 +357,8 @@ function importTheme(data) {
         exclude: raw.exlude || [],
         customBST: raw.customBST || {},
         minBST: raw.minBST || 300,
-        maxBST: raw.maxBST || 601
+        maxBST: raw.maxBST || 601,
+        icon: raw.icon || 0
     };
     
     theme = newTheme;
@@ -359,6 +367,7 @@ function importTheme(data) {
     
     //Update UI
     $("#themeName").val(theme.name);
+    $("#themeIcon").val(theme.icon);
     $("#minbst").val(theme.minBST);
     $("#maxbst").val(theme.maxBST);
     updateIncluded();
