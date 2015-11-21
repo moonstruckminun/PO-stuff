@@ -342,6 +342,8 @@ function showImportWindow() {
 }
 function importTheme(data) {
     var raw;
+    data = data.substr(data.indexOf("{"));
+    data = data.substr(0, data.lastIndexOf("}") + 1);
     try {
         raw = JSON.parse(data);
     } catch (err) {
@@ -354,7 +356,7 @@ function importTheme(data) {
         types: raw.types || [],
         excludeTypes: raw.excludeTypes || [],
         include: raw.include || [],
-        exclude: raw.exlude || [],
+        exclude: raw.exclude || [],
         customBST: raw.customBST || {},
         minBST: raw.minBST || 300,
         maxBST: raw.maxBST || 601,
@@ -391,7 +393,6 @@ function importTheme(data) {
             obj.prop("checked", true);
         }
     });
-    
     
     $(".pickerIcon.customized").removeClass("customized");
     $("#customBST").empty();
