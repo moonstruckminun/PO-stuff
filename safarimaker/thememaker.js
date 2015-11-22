@@ -11,6 +11,7 @@ var theme = {
     icon: 0
 };
 var types = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy", "???"];
+var legendaries = [144,145,146,150,151,243,244,245,249,250,251,377,378,379,380,381,382,383,384,385,386,480,481,482,483,484,485,486,487,488,490,491,492,493,494,638,639,640,641,642,643,644,645,646,647,648,649,716,717,718,719,720,721];
 /*
 "1": {
     name: "Bulbasaur",
@@ -316,7 +317,7 @@ function validForTheme(pokeId) {
         return false;
     }
     for (e in theme.types) {
-        if (hasType(pokeId, theme.types[e])) {
+        if (hasType(pokeId, theme.types[e]) && legendaries.indexOf(parseInt(pokeId, 10)) === -1) {
             return true;
         }
     }
