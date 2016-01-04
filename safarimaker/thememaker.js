@@ -210,6 +210,12 @@ $(document).ready(function () {
 function hideMega() {
     $(".mega").toggle();
 }
+function hideForms() {
+    $(".altform").toggle();
+}
+function hideLegendaries() {
+    $(".legendary").toggle();
+}
 function activateBstApply() {
     var btn = $("#applyBstBtn");
     if (btn.hasClass("btn-default")) {
@@ -288,7 +294,7 @@ function buildPicker(){
     for (var e in pokemon) {
         data = pokemon[e];
         title = "#" + data.icon + " " + data.name + " | " + data.types.join("/") + " | BST " + data.bst;
-        out+="<img class='pickerIcon"+(data.mega ? " mega" : "")+"' pokeid='"+e+"' src='icons/" + data.icon + ".png' title='" + title + "'>";
+        out+="<img class='pickerIcon"+(data.mega ? " mega" : (data.form != 0 ? " altform" : ""))+(legendaries.indexOf(parseInt(data.base, 10)) !== -1 ? " legendary" : "")+"' pokeid='"+e+"' src='icons/" + data.icon + ".png' title='" + title + "'>";
     }
     holder.append(out);
     

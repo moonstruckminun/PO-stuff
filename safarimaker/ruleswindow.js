@@ -1,39 +1,36 @@
 function createRulesUI () {
-    
-    /* *********************************************** */
-    /* BUFF/NERF TYPES & FORBIDDEN BALLS SLIDERS SETUP */
-    /* *********************************************** */
     var home = $("#homePanel");
     home.addClass("topMargin");
     createInputSlider("Inverted Type Effectiveness", "inver", home, true, "Set a chance for Interted Type Effectiveness (Fire strong against Water, etc)");
     createInputSlider("Nerfed Legendaries", "noLegendaries", home, true, "Set a chance for nerfed Legendaries if used as active");
     
-    
-    var bstPanels = $("<div class='container-fluid topMargin well well-sm'></div>");
+    var bstPanels = $("<div class='panel panel-default topMargin'></div>");
     home.append(bstPanels);
     
+    var header = $('<div class="panel-heading"></div>');
+    var body = $('<div class="panel-body"></div>');
+    
+    bstPanels.append(header);
+    bstPanels.append(body);
+    
     var check = $('<label><input type="checkbox" id="defaultBST" name="defaultBST" value="Default"> Use default BST settings</label>');
-    bstPanels.append(check);
+    header.append(check);
     
     var row = $("<div class='row'></div>");
-    bstPanels.append(row);
+    body.append(row);
     
-    var col1 = $("<div class='col-md-6'></div>");
-    var innerCol1 = $("<div class='col-md-12 well well-sm'></div>");
+    var col1 = $("<div class='col-md-6 '></div>");
     row.append(col1);
-    col1.append(innerCol1);
     
     var col2 = $("<div class='col-md-6'></div>");
-    var innerCol2 = $("<div class='col-md-12 well well-sm'></div>");
     row.append(col2);
-    col2.append(innerCol2);
     
-    createBstPanel("Minimum BST", "minBST", innerCol1, [230, 400], "A random value will be picked based on this range. Pokémon with BST below the value picked will be nerfed.");
-    createBstPanel("Maximum BST", "maxBST", innerCol2, [430, 531], "A random value will be picked based on this range. Pokémon with BST above the value picked will be nerfed.");
+    createBstPanel("Minimum BST", "minBST", col1, [230, 400], "A random value will be picked based on this range. Pokémon with BST below the value picked will be nerfed.");
+    createBstPanel("Maximum BST", "maxBST", col2, [430, 531], "A random value will be picked based on this range. Pokémon with BST above the value picked will be nerfed.");
     
     check.children("input[type=checkbox]").change(function(event) {
         var obj = $(this);
-        var par = obj.parent().parent();
+        var par = obj.parent().parent().parent();
         if (obj.prop("checked")) {
             par.find(".ruleSlider").slider("disable");
             par.find(".sliderInput").prop("disabled", true);
@@ -345,7 +342,7 @@ function createInputSlider(label, id, container, disabler, hint) {
     obj.append("<span class='sliderSep'></span> ");
     obj.append("<input type='text' class='span2 ruleSlider' ref='" + id + "' value='' data-slider-min='0' data-slider-max='100' data-slider-step='0.1' data-slider-value='0'/> ");
     obj.append("<span class='sliderSep'></span> ");
-    obj.append("<input class='form-control sliderInput' type='number' value='0' ref='" + id + "'> ");
+    obj.append("<input class='form-control sliderInput' type='number' value='0' ref='" + id + "' min='0' max='100'> ");
     
     if (disabler) {
         var check = $('<label><input type="checkbox" id="default'+id+'" name="default'+id+'" value="Default"> Use default settings</label>');
@@ -385,10 +382,10 @@ function createInputSlider(label, id, container, disabler, hint) {
     return obj;
 }
 function createDualSlider(container, label, id, range, tipPos) {
-    var dualGroup = $('<div class="form-group"><input id="'+id+'Lower" ref="lower" class="form-control dualSliderInput" type="number" value="'+range[0]+'"><span class="sliderSep2"></span><div class="panel-inline"></div><span class="sliderSep2"><input id="'+id+'Upper" ref="upper" class="form-control dualSliderInput" type="number" value="'+range[1]+'"></div>');
+    var dualGroup = $('<div class="form-group"><input id="'+id+'Lower" ref="lower" class="form-control dualSliderInput" type="number" value="'+range[0]+'" min="100" max="999"><span class="sliderSep2"></span><div class="panel-inline"></div><span class="sliderSep2"><input id="'+id+'Upper" ref="upper" class="form-control dualSliderInput" type="number" value="'+range[1]+'" min="100" max="999"></div>');
     container.append(dualGroup);
     
-    var dualSlider = $('<input type="text" class="span2 dualSlider" ref="' + id + '" value="" data-slider-min="100" data-slider-max="1000" data-slider-step="1" data-slider-value="['+range[0]+','+range[1]+']"/>');
+    var dualSlider = $('<input type="text" class="span2 dualSlider" ref="' + id + '" value="" data-slider-min="100" data-slider-max="999" data-slider-step="1" data-slider-value="['+range[0]+','+range[1]+']"/>');
     dualGroup.find(".panel-inline").append(dualSlider);
     dualSlider.slider({
         tooltip_position: tipPos || null
@@ -426,6 +423,7 @@ function createBstPanel(label, id, container, startingRange, hint) {
     var dualGroup = createDualSlider(container, label, id, startingRange, "bottom");
     
     var chanceSlider = createInputSlider("Chance", "chance" + cap(id), container);
+    chanceSlider.addClass("bstSlider");
 }
 
 function showRules() {
@@ -597,35 +595,6 @@ function loadRules(rules) {
             }
         }
     }
-    
-    
-    /* 
-    "daycare" : {               "name":"Daycare","types":["Normal","Fire","Water","Grass","Electric","Rock","Ground","Bug","Dark","Psychic","Steel","Ghost","Dragon","Fighting","Flying","Fairy","Ice","Poison"],"excludeTypes":[],"include":[66205,131741,197277,262813,65958,65948,131484,489],"exclude":[201,188,271,266,268,274,281,292,329],"customBST":{"58":320,"77":320,"111":320,"132":300,"138":320,"140":340,"215":340,"239":305,"240":305,"320":320,"345":340,"347":340,"366":320,"408":340,"410":340,"425":320,"427":320,"446":320,"489":340,"559":320,"564":340,"566":340,"619":320,"627":320,"629":320,"636":340,"682":320,"684":320,"696":340,"698":340},"minBST":240,"maxBST":341,"icon":132,
-        "rules":{"bst":{"maxChance":1,"max":450},"onlyBalls":{"chance":1,"sets":[["safari","great","premier"]]}, "excludeTypes": { "Grass": 0.5 }, "noLegendaries": {"chance": 0.48}, "rewards": {
-        "sets":{"gacha":{"gacha":10},"rare":{"rare":1},"evio":{"eviolite":1}},"chance":{"gacha":0.85,"rare":0.12,"evio":0.03}}}
-    },
-    */    
-    
-    
-    /* 
-    var defaultRules = {
-        "rewards": {
-            "sets": {
-                "defaultSet": {
-                    "gacha": 10
-                },
-                "extra": {
-                    "gacha": 15,
-                    "silver": 2
-                }
-            },
-            "chance": {
-                "defaultSet": 0.8,
-                "extra": 0.05
-            }
-        }
-    };
-     */
 }
 function getRules() {
     var rules = {}, v, c, sets, setsMade, holder, tempObj;

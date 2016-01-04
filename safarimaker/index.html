@@ -32,12 +32,12 @@
                     
                     <div class="form-group">
                         <label for='bstMin'>BST Range: </label>
-                        <input id='bstMin' class='form-control' type='number' value='300'>
+                        <input id='bstMin' class='form-control' type='number' value='300' min='100' max='999'>
                         <div class="panel-inline">
-                            <input id="ex2" type="text" class="span2" value="" data-slider-min="100" data-slider-max="1000" data-slider-step="1" data-slider-value="[300,601]"/>
+                            <input id="ex2" type="text" class="span2" value="" data-slider-min="100" data-slider-max="999" data-slider-step="1" data-slider-value="[300,601]"/>
                         </div>
                         <label for='bstMax'> </label>
-                        <input id='bstMax' class='form-control' type='number' value='601'>
+                        <input id='bstMax' class='form-control' type='number' value='601' min='100' max='999'>
                         <input type="button" class="btn btn-default" id="applyBstBtn" name="applyBST" value="Apply BST" onclick="applyBst()"/>
                     </div>
                     
@@ -50,7 +50,11 @@
                     
                     <span class="hSep">|</span> 
                     
-                    <input type="button" class="btn btn-info" name="toggleMega" value="Toggle Mega" onclick="hideMega()"/>
+                    <div class="btn-group">
+                        <input type="button" class="btn btn-info" name="toggleMega" value="Toggle Mega" onclick="hideMega()"/>
+                        <input type="button" class="btn btn-info" name="toggleForm" value="Toggle Forms" onclick="hideForms()"/>
+                        <!-- <input type="button" class="btn btn-info" name="toggleLegendaries" value="Toggle Legendaries" onclick="hideLegendaries()"/> -->
+                    </div>
                     <input type="button" class="btn btn-warning" name="showRules" value="Edit Rules" data-toggle="modal" data-target="#rulesWindow"/>
                     <div class="btn-group">
                         <input type="button" class="btn btn-primary" name="importButton" value="Import theme" data-toggle="modal" data-target="#importWindow"/>
@@ -122,26 +126,7 @@
                     </div>
                 </div>
             </div>
-            <!-- 
-            var defaultRules = {
-                "rewards": {
-                    "sets": {
-                        "defaultSet": {
-                            "gacha": 10
-                        },
-                        "extra": {
-                            "gacha": 15,
-                            "silver": 2
-                        }
-                    },
-                    "chance": {
-                        "defaultSet": 0.8,
-                        "extra": 0.05
-                    }
-                }
-            };
-
-            -->
+            
             <!-- Edit Rules Modal -->
             <div id="rulesWindow" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-lg">
