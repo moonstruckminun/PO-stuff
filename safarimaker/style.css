@@ -1,14 +1,13 @@
-html, body {
-    font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
-}
 #builder {
-    background: #CCCCCC;
-    padding: 3px;
+    margin-top: 15px;
 }
-.builderField {
-    margin: 3px;
-    padding: 3px;
-    background: #EEEEEE;
+.pickerIcon {
+    -webkit-transition: background 0.3s;
+    transition: background 0.3s;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    height: 40px;
 }
 .pickerIcon:hover {
     background:#EBDB81;
@@ -18,65 +17,133 @@ html, body {
     /* background:#E54E3A; */
 }
 .included {
-    background:#28E57A;
+    /* background:#28E57A; */
+    background:#5CB85C;
+    -webkit-transition: background 0.5s;
+    transition: background 0.5s;
 }
 .excluded {
-    background:#D55C16;
+    /* background:#D55C16; */
+    background:#D9534F;
+    -webkit-transition: background 0.5s;
+    transition: background 0.5s;
 }
 .customized {
     border: 1px solid magenta;
+    /* border: 1px solid #286090; */
 }
-#minbst, #maxbst, #themeIcon, .bstInput {
-    width: 45px;
+#bstMin, #bstMax, #themeIcon {
+    width: 60px;
 }
-.custombst {
+.form-control.sliderInput, .form-control.doubleSliderInput {
+    width: 70px;
+}
+#themeName {
+    width: 110px;
+}
+.custombst, .itemAmount {
     margin-right: 8px;
 }
-#customBST, .custombst {
+#customBST, .custombst, .itemAmount {
     display: inline;
 }
-
-.overlay {
-    background-color: rgba(0,0,0,.25);
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    left: 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
+.form-group.itemAmount {
+    display: block;
+    margin-bottom: 3px;
 }
-.overlay > div.overlayWrapper {
-    align-self: center;
-    padding: 6px;
+.round {
 }
-.overlay > div.overlayWrapper > div.overlayWindow {
-    background-color: #FFFAF5;
-    border-radius: 12px;
-    -webkit-border-radius: 12px;
-    -moz-border-radius: 12px;
-    padding: 5px;    
-    position: relative;
-    box-shadow: 10px 10px 12px #777777;
+.well-sm {
+    margin-bottom: 10px;
 }
-.closeButton {
-    color: red;
-    font-weight: bold;
-    
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    background: #DF9383;
-    
-    text-align: center;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    padding: 2px 6px;
+#includeBox {
+    margin-top: 10px;
+}
+.includedLabel, .excludedLabel {
     cursor: pointer;
 }
-#clearButtton {
-    position: absolute;
-    top: 16px;
-    right: 16px;
+.form-control.bstInput, .form-control.amtInput {
+    width: 60px;
+}
+.form-control.amtInput {
+    display: inline;
+}
+.custombst label {
+    font-weight: normal;
+}
+.rawThemeField {
+    width: 100%;
+}
+#helpButton {
+    margin-right: 4px;
+}
+.slider-selection {
+    background: #5CB85C;
+}
+.panel-inline {
+	width : 100% ;
+	height : 34px;
+	padding : 6px 12px;
+	font-size : 14px;
+	line-height : 1.42857143;
+	color :  # 555;
+	background-color :  #fff;
+	background-image : none;
+	border: 1px solid #ccc;
+	border-radius : 4px;
+	-webkit-box-shadow : inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow : inset 0 1px 1px rgba(0, 0, 0, .075);
+    display: inline;
+}
+.hSep {
+    margin: 0 4px;
+    font-size: 18px;
+    color: #999;
+}
+.slidersTabForms.form-inline {
+    padding: 5px;
+}
+.slidersTabLabel {
+    margin-top: 9px;
+}
+.sliderLabel {
+    font-weight: bold;
+    display: inline-block;
+    min-width: 60px;
+}
+.sliderSep {
+    margin-left: 12px;
+    margin-right: 12px;
+}
+.sliderSep2 {
+    margin-left: 6px;
+    margin-right: 6px;
+}
+.newSetButton {
+    margin-bottom:8px;
+}
+.listOptions {
+    margin-left: 6px;
+    margin-right: 6px;
+}
+.removableLabel {
+    cursor: pointer;
+    margin-right: 3px;
+}
+.itemHolder {
+    display: inline;
+}
+.tightCol {
+    padding: 0 2px;
+}
+.dualSliderInput {
+    width: 65px;
+    display: inline;
+}
+.topMargin {
+    margin-top: 8px;
+}
+.ttip {
+    color: #31B0D5;
+    cursor: default;
 }

@@ -11,6 +11,8 @@ var theme = {
     icon: 0
 };
 var types = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy", "???"];
+var balls = ["safari", "great", "ultra", "master", "myth", "luxury", "quick", "heavy", "spy", "clone", "premier"];
+var items = ["safari", "great", "ultra", "master", "myth", "heavy", "quick", "luxury", "premier", "spy", "clone", "rock", "bait", "gacha", "mega", "stick", "itemfinder", "dust", "salt", "silver", "entry", "rare", "gem", "amulet", "honey", "soothe", "crown", "scarf", "battery", "eviolite", "box", "pearl", "stardust", "bigpearl", "starpiece", "nugget", "bignugget"];
 var legendaries = [144,145,146,150,151,243,244,245,249,250,251,377,378,379,380,381,382,383,384,385,386,480,481,482,483,484,485,486,487,488,490,491,492,493,494,638,639,640,641,642,643,644,645,646,647,648,649,716,717,718,719,720,721];
 /*
 "1": {
@@ -21,24 +23,172 @@ var legendaries = [144,145,146,150,151,243,244,245,249,250,251,377,378,379,380,3
 }
 */
 
+Number.prototype.toFixedNumber = function(x, base){
+  var pow = Math.pow(base||10,x);
+  return +( Math.round(this*pow) / pow );
+}
 $(document).ready(function () {
     loadData(pokeData, type1Data, type2Data, statsData);
     
-    $("input[type=number]").on("keypress", function(event) {
-        if (event.which == 13) {
-            var id = $(this).attr("id").toLowerCase();
-            var val = parseInt($(this).val(), 10);
-            if (!isNaN(val)) {
-                if (id == "minbst") {
-                    theme.minBST = val;
-                    checkAll();
-                } else if (id == "maxbst") {
-                    theme.maxBST = val;
-                    checkAll();
-                }
-            }
+    /* ****************************** */
+    /*      BST SLIDER SETUP          */
+    /* ****************************** */
+    
+    $("#bstMin").on("input", function(event) {
+        var val = parseInt($(this).val(), 10);
+        if (!isNaN(val)) {
+            var high = $("#ex2").slider("getValue")[1];
+            $("#ex2").slider("setValue", [val, high]);
+            activateBstApply();
         }
     });
+    $("#bstMax").on("input", function(event) {
+        var val = parseInt($(this).val(), 10);
+        if (!isNaN(val)) {
+            var low = $("#ex2").slider("getValue")[0];
+            $("#ex2").slider("setValue", [low, val]);
+            activateBstApply();
+        }
+    });
+    $("#ex2").slider({});
+    $("#ex2").change(function(slideEvt) {
+        $("#bstMin").val(slideEvt.value.newValue[0]);
+        $("#bstMax").val(slideEvt.value.newValue[1]);
+        activateBstApply();
+    });
+    $("#ex2").slider("setValue", [parseInt($("#bstMin").val(), 10), parseInt($("#bstMax").val(), 10)]);
+    
+    
+    /* ****************************** */
+    /*     INCLUDE/EXCLUDE SETUP      */
+    /* ****************************** */
+    $('.includeExclude').on("contextmenu", function(evt) {evt.preventDefault();});
+    $('#includeBox').on("mousedown", ".includeExclude", function (event) {
+		event.preventDefault();
+        var obj = $(this);
+        var state = obj.attr("name");
+        var type = $(this).attr("value");
+        var list, rList;
+        
+        var rClass = [], aClass = [], fName = state, addToList = true, e;
+        
+        switch (event.which) {
+            case 3:
+                list = theme.excludeTypes;
+                rList = theme.types;
+                if (state == "excluded") {
+                    rClass.push("btn-danger");
+                    aClass.push("btn-default");
+                    fName = "nothing";
+                    addToList = false;
+                } else {
+                    rClass = ["btn-default", "btn-success"];
+                    aClass.push("btn-danger");
+                    fName = "excluded";
+                }
+            break;
+            case 1:
+                list = theme.types;
+                rList = theme.excludeTypes;
+                if (state == "included") {
+                    rClass.push("btn-success");
+                    aClass.push("btn-default");
+                    fName = "nothing";
+                    addToList = false;
+                } else {
+                    rClass = ["btn-default", "btn-danger"];
+                    aClass.push("btn-success");
+                    fName = "included";
+                }
+            break;
+            default:
+                return;
+        }
+        
+        for (e in rClass) {
+            obj.removeClass(rClass[e]);
+        }
+        for (e in aClass) {
+            obj.addClass(aClass[e]);
+        }
+        if (addToList) {
+            if (list.indexOf(type) == -1) {
+                list.push(type);
+            }
+            if (rList.indexOf(type) !== -1) {
+                rList.splice(rList.indexOf(type), 1);
+            }
+        } else {
+            if (list.indexOf(type) !== -1) {
+                list.splice(list.indexOf(type), 1);
+            }
+        }
+        obj.attr("name", fName);
+        checkAll();
+	});
+    $('#includedPokeContainer').on("contextmenu", function(evt) {evt.preventDefault();});
+    $('#includedPoke').on("mousedown", ".includedLabel", function (event) {
+		event.preventDefault();
+        var obj = $(this), num = parseInt($(this).attr("value"), 10), id;
+        
+        if (!isNaN(num)) {
+            switch (event.which) {
+                case 3:
+                    if (theme.include.indexOf(num) !== -1) {
+                        splice(theme.include, num);
+                        theme.exclude.push(num);
+                        updateIncluded();
+                        id = species(num) + "-" + forme(num);
+                        markPokemon(id);
+                    }
+                break;
+                case 1:
+                    if (theme.include.indexOf(num) !== -1) {
+                        splice(theme.include, num);
+                        updateIncluded();
+                        id = species(num) + "-" + forme(num);
+                        markPokemon(id);
+                    }
+                break;
+                default:
+                    return;
+            }
+        }
+        
+	});
+    $('#includedPoke').on("mousedown", ".excludedLabel", function (event) {
+		event.preventDefault();
+        var obj = $(this), num = parseInt($(this).attr("value"), 10), id;
+        
+        if (!isNaN(num)) {
+            switch (event.which) {
+                case 1:
+                    if (theme.exclude.indexOf(num) !== -1) {
+                        splice(theme.exclude, num);
+                        theme.include.push(num);
+                        updateIncluded();
+                        id = species(num) + "-" + forme(num);
+                        markPokemon(id);
+                    }
+                break;
+                case 3:
+                    if (theme.exclude.indexOf(num) !== -1) {
+                        splice(theme.exclude, num);
+                        updateIncluded();
+                        id = species(num) + "-" + forme(num);
+                        markPokemon(id);
+                    }
+                break;
+                default:
+                    return;
+            }
+        }
+        
+	});
+    
+    /* ****************************** */
+    /*           MISC SETUP           */
+    /* ****************************** */
     $("#themeName").on("input", function(event) {
         theme.name = $(this).val();
     });
@@ -48,48 +198,36 @@ $(document).ready(function () {
             theme.icon = val;
         }
     });
-    $("input[type=checkbox]").on("click", function(event) {
-        var action = $(this).attr("name");
-        var type = $(this).attr("value");
-        var val = $(this).is(":checked");
-        var list;
-        if (action == "include") {
-            list = theme.types;
-            if (val) {
-                if (list.indexOf(type) == -1) {
-                    list.push(type);
-                }
-            } else {
-                if (list.indexOf(type) !== -1) {
-                    list.splice(list.indexOf(type), 1);
-                }
-            }
-            checkAll();
-        } else if (action == "exclude") {
-            list = theme.excludeTypes;
-            if (val) {
-                if (list.indexOf(type) == -1) {
-                    list.push(type);
-                }
-            } else {
-                if (list.indexOf(type) !== -1) {
-                    list.splice(list.indexOf(type), 1);
-                }
-            }
-            checkAll();
-        }
-    });
     
-    $("#closeInput").on("click", function(e){
-        $("#inputOverlay").fadeOut();
-    });
-    $("#closeOutput").on("click", function(e){
-        $("#outputOverlay").fadeOut();
-    });
+    
+    createRulesUI();
+    $(".rulesRadio").change(showRules);
+    showRules();
+    
+    $('[data-toggle="tooltip"]').tooltip(); 
 });
 
 function hideMega() {
     $(".mega").toggle();
+}
+function activateBstApply() {
+    var btn = $("#applyBstBtn");
+    if (btn.hasClass("btn-default")) {
+        btn.removeClass("btn-default");
+        btn.addClass("btn-success");
+    }
+}
+function applyBst() {
+    var val = $("#ex2").slider("getValue");
+    theme.minBST = val[0];
+    theme.maxBST = val[1];
+    checkAll();
+    
+    var btn = $("#applyBstBtn");
+    if (btn.hasClass("btn-success")) {
+        btn.removeClass("btn-success");
+        btn.addClass("btn-default");
+    }
 }
 
 function loadData(poke, types1, types2, stats) {
@@ -100,6 +238,7 @@ function loadData(poke, types1, types2, stats) {
     types2 = toRawObject(types2);
     stats = toRawObject(stats);
     
+    // var size = pokeRaw.length * 0.1, pkmn, t1, t2, bst,  e;
     var size = pokeRaw.length, pkmn, t1, t2, bst,  e;
     for (e = 1; e < size; e++) {
         pkmn = convertRawValue(pokeRaw[e]);
@@ -141,7 +280,7 @@ function loadData(poke, types1, types2, stats) {
         pokeOrdered[ordered[e]] = pokemon[ordered[e]];
     }
     pokemon = pokeOrdered;
-    
+
     buildPicker();
 }
 function buildPicker(){
@@ -164,11 +303,13 @@ function buildPicker(){
                 if (theme.exclude.indexOf(num) !== -1) {
                     theme.exclude.splice(theme.exclude.indexOf(num), 1);
                     $(this).removeClass("excluded");
+                    $(this).removeClass("included");
                 } else {
                     theme.exclude.push(num);
+                    splice(theme.include, num);
                     $(this).addClass("excluded");
                 }
-                updateExcluded();
+                updateIncluded();
             break;
             case 2:
                 setForCustomBST(id);
@@ -176,8 +317,12 @@ function buildPicker(){
             case 1:
                 if (theme.include.indexOf(num) !== -1) {
                     theme.include.splice(theme.include.indexOf(num), 1);
+                    $(this).removeClass("included");
                 } else {
                     theme.include.push(num);
+                    splice(theme.exclude, num);
+                    $(this).removeClass("excluded");
+                    $(this).addClass("included");
                 }
                 updateIncluded();
         }
@@ -238,14 +383,14 @@ function addRawBST(raw) {
 function setForCustomBST(id, value) {
     var data = pokemon[id];
     
-    
     if ($(".custombst[key="+id+"]").length) {
         $(".custombst[key="+id+"]").remove();
         $(".pickerIcon[pokeid="+id+"]").removeClass("customized");
         delete theme.customBST[data.index];
     } else {
         var bst = theme.customBST[data.index] = value || data.bst;
-        var sele = "<div class='custombst' key='" + id + "'>" + data.name + ": <input type='number' class='bstInput' key='" + id + "' value='" + bst + "' ></div>";
+        
+        var sele = "<div class='custombst form-group' key='" + id + "' ><label>" + data.name + ":</label> <input type='number' class='bstInput form-control' key='" + id + "' value='" + bst + "' ></div>";
         
         $("#customBST").append(sele);
         $(".pickerIcon[pokeid="+id+"]").addClass("customized");
@@ -255,6 +400,11 @@ function setForCustomBST(id, value) {
             if (!isNaN(val)) {
                 theme.customBST[data.index] = val;
                 markPokemon(id);
+            }
+        });
+        $(".bstInput.form-control").on("keypress", function(event) {
+            if (event.which == 13) {
+                event.preventDefault();
             }
         });
     }
@@ -279,6 +429,7 @@ function markPokemon(pokeId) {
     if (validForTheme(pokeId)) {
         if (!icon.hasClass("included")) {
             icon.addClass("included");
+            icon.removeClass("excluded");
         }
     } else {
         if (theme.exclude.indexOf(pokemon[pokeId].index) !== -1) {
@@ -299,7 +450,11 @@ function markPokemon(pokeId) {
 function validForTheme(pokeId) {
     var data = pokemon[pokeId];
     
-    if (data.bst >= theme.maxBST && !(data.index in theme.customBST && theme.customBST[data.index] < theme.maxBST)) {
+    if (data.index in theme.customBST) {
+        if (theme.customBST[data.index] >= theme.maxBST) {
+            return false;
+        }
+    } else if (data.bst >= theme.maxBST) {
         return false;
     }
     if (theme.exclude.indexOf(data.index) !== -1) {
@@ -326,16 +481,28 @@ function validForTheme(pokeId) {
 function hasType(pokeId, type) {
     return pokemon[pokeId].types.indexOf(type) !== -1;
 }
-function toPokeName(num) {
-    var id = species(num) + "-" + forme(num);
-    return pokemon[id].name;
-}
 
 function updateIncluded() {
-    $("#includedPoke").html(theme.include.map(toPokeName).join(", "));  
+    var out = [], e, id, num;
+    
+    for (e = 0; e < theme.include.length; e++) {
+        num = theme.include[e];
+        id = species(num) + "-" + forme(num);
+        out.push("<span class='label label-success includedLabel' value='" + num + "'>" + pokemon[id].name + "</span>");
+    }
+    for (e = 0; e < theme.exclude.length; e++) {
+        num = theme.exclude[e];
+        id = species(num) + "-" + forme(num);
+        out.push("<span class='label label-danger excludedLabel' value='" + num + "'>" + pokemon[id].name + "</span>");
+    }
+    
+    $("#includedPoke").html(out.join(" "));
 }
-function updateExcluded() {
-    $("#excludedPoke").html(theme.exclude.map(toPokeName).join(", "));
+function resetButton(btn) {
+    btn.removeClass("btn-success");
+    btn.removeClass("btn-danger");
+    btn.addClass("btn-default");
+    btn.prop("name", "nothing");
 }
 
 function showImportWindow() {
@@ -366,45 +533,76 @@ function importTheme(data) {
     
     theme = newTheme;
     $("#inputOverlay").fadeOut();
-    checkAll();
     
     //Update UI
     $("#themeName").val(theme.name);
     $("#themeIcon").val(theme.icon);
-    $("#minbst").val(theme.minBST);
-    $("#maxbst").val(theme.maxBST);
-    updateIncluded();
-    updateExcluded();
+    $("#bstMin").val(theme.minBST);
+    $("#bstMax").val(theme.maxBST);
     
-    var boxes = $("input[type=checkbox][name=include]"), obj, type;
+    var e, num;
+    for (e = theme.include.length - 1; e >= 0; e--) {
+        num = theme.include[e];
+        if (theme.exclude.indexOf(num) !== -1) {
+            theme.include.splice(e, 1);
+        }
+    }
+    
+    var obj, type, boxes = $("input.includeExclude");
     boxes.each(function(i){
         obj = $(this);
-        obj.prop("checked", false);
+        resetButton(obj);
         type = obj.val();
         if (theme.types.indexOf(type) !== -1) {
-            obj.prop("checked", true);
+            obj.removeClass("btn-default");
+            obj.addClass("btn-success");
+            obj.prop("name", "included");
+            if (theme.excludeTypes.indexOf(type) !== -1) {
+                theme.excludeTypes.splice(theme.excludeTypes.indexOf(type), 1);
+            }
+        } else if (theme.excludeTypes.indexOf(type) !== -1) {
+            obj.removeClass("btn-default");
+            obj.addClass("btn-danger");
+            obj.prop("name", "excluded");
         }
     });
-    boxes = $("input[type=checkbox][name=exclude]");
-    boxes.each(function(i){
-        obj = $(this);
-        obj.prop("checked", false);
-        type = obj.val();
-        if (theme.excludeTypes.indexOf(type) !== -1) {
-            obj.prop("checked", true);
-        }
-    });
+    
+    checkAll();
+    updateIncluded();
     
     $(".pickerIcon.customized").removeClass("customized");
     $("#customBST").empty();
-    var e, num;
+    
     for (e in theme.customBST) {
         num = parseInt(e, 10);
         var id = species(num) + "-" + forme(num);
         setForCustomBST(id, theme.customBST[e]);
     }
+    
+    loadRules(raw.rules);
+    
+    $("#importWindow").modal("hide");
 }
 function exportTheme() {
-    $("#outputOverlay").toggle();
+    var rules = getRules();
+    
+    if (rules) {
+        theme.rules = rules;
+    } else {
+        delete theme.rules;
+    }
+    
     $("#outputThemeField").val(JSON.stringify(theme));
+}
+
+function splice(arr, val) {
+    var index = arr.indexOf(val);
+    if (index !== -1) {
+        arr.splice(index, 1);
+        return index;
+    }
+    return -1;
+}
+function cap(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }

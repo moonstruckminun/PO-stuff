@@ -3,84 +3,266 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Safari Theme Maker</title>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+        <link rel="stylesheet" href="bootstrap-slider.min.css">
+        <script src="bootstrap-slider.min.js"></script>
+        
 		<script type="text/javascript" src="data.js"></script>
 		<script type="text/javascript" src="thememaker.js"></script>
+		<script type="text/javascript" src="ruleswindow.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-        <div id='builder'>
-            <div class='builderField'> Name: <input id='themeName' type='field' value='None'> | 
-            BST Range: <input type='number' id='minbst' value='300' > ~ <input type='number' id='maxbst' value='601' > | 
-            Icon: <input type='number' id='themeIcon' value='0' > | 
-            <input type="button" name="toggleMega" value="Toggle Mega" onclick="hideMega()"/> | 
-            <input type="button" name="importButton" value="Import theme" onclick="showImportWindow()"/> | 
-            <input type="button" name="exportButton" value="Export theme" onclick="exportTheme()"/>
-            <input type="button" name="clearButton" id="clearButtton" value="Reset" onclick="importTheme('{}')"/>
-            </div>
-            <div class='builderField'> Include Types: 
-                <input type="checkbox" name="include" value="Normal"> Normal |
-                <input type="checkbox" name="include" value="Fighting"> Fighting |
-                <input type="checkbox" name="include" value="Flying"> Flying |
-                <input type="checkbox" name="include" value="Poison"> Poison |
-                <input type="checkbox" name="include" value="Ground"> Ground |
-                <input type="checkbox" name="include" value="Rock"> Rock |
-                <input type="checkbox" name="include" value="Bug"> Bug |
-                <input type="checkbox" name="include" value="Ghost"> Ghost |
-                <input type="checkbox" name="include" value="Steel"> Steel |
-                <input type="checkbox" name="include" value="Fire"> Fire |
-                <input type="checkbox" name="include" value="Water"> Water |
-                <input type="checkbox" name="include" value="Grass"> Grass |
-                <input type="checkbox" name="include" value="Electric"> Electric |
-                <input type="checkbox" name="include" value="Psychic"> Psychic |
-                <input type="checkbox" name="include" value="Ice"> Ice |
-                <input type="checkbox" name="include" value="Dragon"> Dragon |
-                <input type="checkbox" name="include" value="Dark"> Dark |
-                <input type="checkbox" name="include" value="Fairy"> Fairy </div>
-            <div class='builderField'> Exclude Types: 
-                <input type="checkbox" name="exclude" value="Normal"> Normal |
-                <input type="checkbox" name="exclude" value="Fighting"> Fighting |
-                <input type="checkbox" name="exclude" value="Flying"> Flying |
-                <input type="checkbox" name="exclude" value="Poison"> Poison |
-                <input type="checkbox" name="exclude" value="Ground"> Ground |
-                <input type="checkbox" name="exclude" value="Rock"> Rock |
-                <input type="checkbox" name="exclude" value="Bug"> Bug |
-                <input type="checkbox" name="exclude" value="Ghost"> Ghost |
-                <input type="checkbox" name="exclude" value="Steel"> Steel |
-                <input type="checkbox" name="exclude" value="Fire"> Fire |
-                <input type="checkbox" name="exclude" value="Water"> Water |
-                <input type="checkbox" name="exclude" value="Grass"> Grass |
-                <input type="checkbox" name="exclude" value="Electric"> Electric |
-                <input type="checkbox" name="exclude" value="Psychic"> Psychic |
-                <input type="checkbox" name="exclude" value="Ice"> Ice |
-                <input type="checkbox" name="exclude" value="Dragon"> Dragon |
-                <input type="checkbox" name="exclude" value="Dark"> Dark |
-                <input type="checkbox" name="exclude" value="Fairy"> Fairy </div>
-            <div class='builderField'> Include Pokémon: <span id='includedPoke'></span></div>
-            <div class='builderField'> Exclude Pokémon: <span id='excludedPoke'></span></div>
-            <div class='builderField'> Custom BST: <div id='customBST'></div></div>
-        </div>
-        <div id='pokePicker'></div>
-        <div id='outputOverlay' class='overlay' style='display: none'>
-            <div class='overlayWrapper'>
-                <div class='overlayWindow' id='outputWindow'>
-                    <span class="closeButton" id="closeOutput">X</span>
-                    Theme: <br>
-                    <textarea rows="20" cols="60" id="outputThemeField"></textarea>
+        <div class="container-fluid">
+        
+            <!-- All the theme options go here -->
+            <div class='well well-sm' id='builder'>
+                <form class="form-inline builder-line" id='builder-header' role="form">
+                    <div class="form-group">
+                        <label for='themeName'>Name: </label>
+                        <input id='themeName' class='form-control' type='field' value='None'>
+                    </div>
+                    
+                    <span class="hSep">|</span> 
+                    
+                    <div class="form-group">
+                        <label for='bstMin'>BST Range: </label>
+                        <input id='bstMin' class='form-control' type='number' value='300'>
+                        <div class="panel-inline">
+                            <input id="ex2" type="text" class="span2" value="" data-slider-min="100" data-slider-max="1000" data-slider-step="1" data-slider-value="[300,601]"/>
+                        </div>
+                        <label for='bstMax'> </label>
+                        <input id='bstMax' class='form-control' type='number' value='601'>
+                        <input type="button" class="btn btn-default" id="applyBstBtn" name="applyBST" value="Apply BST" onclick="applyBst()"/>
+                    </div>
+                    
+                    <span class="hSep">|</span> 
+                    
+                    <div class="form-group">
+                        <label for='themeIcon'>Icon: </label>
+                        <input id='themeIcon' class='form-control' type='number' value='0'>
+                    </div>
+                    
+                    <span class="hSep">|</span> 
+                    
+                    <input type="button" class="btn btn-info" name="toggleMega" value="Toggle Mega" onclick="hideMega()"/>
+                    <input type="button" class="btn btn-warning" name="showRules" value="Edit Rules" data-toggle="modal" data-target="#rulesWindow"/>
+                    <div class="btn-group">
+                        <input type="button" class="btn btn-primary" name="importButton" value="Import theme" data-toggle="modal" data-target="#importWindow"/>
+                        <input type="button" class="btn btn-primary" name="exportButton" value="Export theme" data-toggle="modal" data-target="#exportWindow" onclick="exportTheme()" />
+                    </div>
+                    <input type="button" class="btn btn-danger pull-right" name="clearButton" id="clearButtton" value="Reset" onclick="importTheme('{}')"/> 
+                    <input type="button" class="btn btn-info pull-right" name="helpButton" id="helpButton" value="Help" data-toggle="modal" data-target="#helpWindow"/> 
+                </form>
+                
+                <div class='well well-sm' id='includeBox'>
+                    <strong>Types: </strong>
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Normal"/>
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Fighting">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Flying">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Poison">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Ground">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Rock">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Bug">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Ghost">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Steel">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Fire">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Water">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Grass">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Electric">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Psychic">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Ice">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Dragon">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Dark">
+                    <input type="button" class="btn includeExclude btn-default" name="nothing" value="Fairy">
+                </div>
+                
+                <div class='well well-sm' id='includedPokeContainer'>
+                    <strong>Pokémon:</strong> <span class="text-success" id='includedPoke'></span>
+                </div>
+                <div class='well well-sm'>
+                    <strong>Custom BST:</strong> <!-- <div id='customBST'></div> -->
+                    <form class="form-inline builder-line" id='customBST' role="form"></form>
                 </div>
             </div>
-        </div>
-        <div id='inputOverlay' class='overlay' style='display: none'>
-            <div class='overlayWrapper'>
-                <div class='overlayWindow' id='inputWindow'>
-                    <span class="closeButton" id="closeInput">X</span>
-                    Paste your theme here and press Load: <br>
-                    <form name="myform" action="" method="get">
-                        <textarea rows="20" cols="60" name='inputbox' id="inputThemeField"></textarea><br>
-                        <input type="button" name="loadButton" value="Load Theme" onclick="importTheme(this.form.inputbox.value)"/>
-                    </form>
+            
+            <!-- Area where all Pokémon Icons will appear -->
+            <div id='pokePicker'></div>
+            
+            <!-- Import Theme Modal -->
+            <div id="importWindow" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <p class='text-center'>Paste your theme here and press Load:</p>
+                            <form name="myform" action="" method="get">
+                                <textarea rows="20" cols="60" name='inputbox' class="rawThemeField"></textarea>
+                                <input type="button" class="btn btn-block btn-primary" name="loadButton" value="Load Theme" onclick="importTheme(this.form.inputbox.value)"/>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
+            <!-- Export Theme Modal -->
+            <div id="exportWindow" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <p class='text-center'>Your theme will show in the box below:</p>
+                            <textarea rows="20" cols="60" name='inputbox' class="rawThemeField" id="outputThemeField"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 
+            var defaultRules = {
+                "rewards": {
+                    "sets": {
+                        "defaultSet": {
+                            "gacha": 10
+                        },
+                        "extra": {
+                            "gacha": 15,
+                            "silver": 2
+                        }
+                    },
+                    "chance": {
+                        "defaultSet": 0.8,
+                        "extra": 0.05
+                    }
+                }
+            };
+
+            -->
+            <!-- Edit Rules Modal -->
+            <div id="rulesWindow" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Edit Rules</h4>
+                        </div>
+                        <div class="modal-body">
+                        
+                            <div class="well well-sm">
+                                <strong>Rules Set : </strong>
+                                <label class="radio-inline"><input type="radio" name="optradio" class="rulesRadio" value="default" checked>Default Rules</label>
+                                <label class="radio-inline"><input type="radio" name="optradio" class="rulesRadio" value="custom" >Custom Rules</label>
+                                <label class="radio-inline"><input type="radio" name="optradio" class="rulesRadio" value="none" >No Rules</label> 
+                                <span class="glyphicon glyphicon-question-sign ttip" data-toggle="tooltip" title="Pick which rule set to use."></span>
+                            </div>
+                        
+                            <!-- Tabs -->
+                            <div id='customRules'>
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#home">General</a></li>
+                                    <li><a data-toggle="tab" href="#onlyTypesPanel">Type Sets</a></li>
+                                    <li><a data-toggle="tab" href="#nerfTypesPanel">Nerf Types</a></li>
+                                    <li><a data-toggle="tab" href="#buffTypesPanel">Buff Types</a></li>
+                                    <li><a data-toggle="tab" href="#onlyBallsPanel">Ball Sets</a></li>
+                                    <li><a data-toggle="tab" href="#forbiddenBallsPanel">Forbidden Balls</a></li>
+                                    <li><a data-toggle="tab" href="#rewardsPanel">Rewards</a></li>
+                                </ul>
+
+                                <!-- Pages -->
+                                <div class="tab-content">
+                                    <div id="home" class="tab-pane fade in active">
+                                        <div class='panelContent' id='homePanel'>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div id="onlyTypesPanel" class="tab-pane fade" list="types">
+                                        <label class="slidersTabLabel"><input type="checkbox" id="defaultOnlyTypes" name="defaultOnlyTypes" value="Default"> Use default Types sets</label>
+                                        <div class='panelContent' id='customOnlyTypesPanel'>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="nerfTypesPanel" class="tab-pane fade" list="types">
+                                        <label class="slidersTabLabel"><input type="checkbox" id="defaultNerfs" name="defaultNerfs" value="Default"> Use default Type Nerfs</label>
+                                        <span class="glyphicon glyphicon-question-sign ttip" data-toggle="tooltip" title="Defines which types can get nerfed for a contest"></span>
+                                        <div class='row panelContent' id='customNerfsPanel'>
+                                            <div class='col-md-6'>
+                                            </div>
+                                            <div class='col-md-6'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="buffTypesPanel" class="tab-pane fade" list="types">
+                                        <label class="slidersTabLabel"><input type="checkbox" id="defaultBuffs" name="defaultBuffs" value="Default"> Use default Type Buffs</label>
+                                        <span class="glyphicon glyphicon-question-sign ttip" data-toggle="tooltip" title="Defines which types can get buffed for a contest"></span>
+                                        <div class='row panelContent' id='customBuffsPanel'>
+                                            <div class='col-md-6'>
+                                            </div>
+                                            <div class='col-md-6'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="onlyBallsPanel" class="tab-pane fade" list="balls">
+                                        <label class="slidersTabLabel"><input type="checkbox" id="defaultOnlyBalls" name="defaultOnlyBalls" value="Default"> Use default Balls sets</label>
+                                        <div class='panelContent' id='customOnlyBallsPanel'>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="forbiddenBallsPanel" class="tab-pane fade" list="balls">
+                                        <label class="slidersTabLabel"><input type="checkbox" id="defaultBalls" name="defaultBalls" value="Default"> Use default Forbidden Balls</label>
+                                        <span class="glyphicon glyphicon-question-sign ttip" data-toggle="tooltip" title="Defines which balls can get forbidden for a contest"></span>
+                                        <div class='row panelContent' id='customBallsPanel'>
+                                            <div class='col-md-6'>
+                                            </div>
+                                            <div class='col-md-6'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="rewardsPanel" class="tab-pane fade" list="items">
+                                        <label class="slidersTabLabel"><input type="checkbox" id="defaultRewards" name="defaultRewards" value="Default"> Use default Rewards</label>
+                                        <div class='panelContent' id='customRewardsPanel'>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Help Modal -->
+            <div id="helpWindow" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Using the Safari Theme Maker</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Types: </strong>Click to include all Pokémon with that type, or right-click to exclude. If a Pokémon has their types both included and excluded, they will be out.</p>
+                            <p><strong>Pokémon: </strong>Click a Pokémon icon to include them into the theme, or right-click to exclude them. This will always have priority over Included/Excluded Types. Alternative Forms will only spawn if included by this method.</p>
+                            <p><strong>BST Range: </strong>Define a value for minimum (recommended 260~380) and maximum (recommended 450~600). Minimum ensures Pokémon below this BST will always have a high chance of spawning, while Maximum makes it so only Pokémon below this value will spawn. <u>Click the 'Apply BST' button after changing this</u>.</p>
+                            <p><strong>Custom BST: </strong>Middle-click a Pokémon icon to define a custom BST (they will count as having this BST for this theme).</p>
+                            <p><strong>Icon: </strong>Define the number of a Pokémon to be the icon that shows when the theme is started.</p>
+                            <p><strong>Edit Rules: </strong>Define the contest rules for this theme.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
 	</body>
 </html>
