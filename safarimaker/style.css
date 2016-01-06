@@ -103,6 +103,10 @@
 .slidersTabForms.form-inline {
     padding: 5px;
 }
+.slidersTabForms.inlineSlider {
+    display: inline;
+    margin: 7px;
+}
 .slidersTabLabel {
     margin-top: 9px;
 }
@@ -110,6 +114,10 @@
     font-weight: bold;
     display: inline-block;
     min-width: 60px;
+}
+.buffNerfLabel {
+    font-weight: bold;
+    display: inline-block;
 }
 .sliderSep {
     margin-left: 10px;
@@ -146,6 +154,7 @@
 .ttip {
     color: #31B0D5;
     cursor: default;
+    margin-right: 7px;
 }
 .slidersTabForms.form-inline.bstSlider {
     padding: 0;

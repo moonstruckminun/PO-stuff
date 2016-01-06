@@ -2,7 +2,13 @@ function createRulesUI () {
     var home = $("#homePanel");
     home.addClass("topMargin");
     createInputSlider("Inverted Type Effectiveness", "inver", home, true, "Set a chance for Interted Type Effectiveness (Fire strong against Water, etc)");
+    createInputSlider("Inverted BST Effectiveness", "invertedBST", home, true, "Set a chance for Interted BST Effectiveness (Lower BST = Better)");
+    createInputSlider("Defensive Mode", "defensive", home, true, "Set a chance for Defensive Mode (Catch bonus by resistance against Wild Pokémon)");
     createInputSlider("Nerfed Legendaries", "noLegendaries", home, true, "Set a chance for nerfed Legendaries if used as active");
+    
+    createBuffNerfSlider("Shiny", "shiny", home, "Set a chance for buffed/nerfed Shiny if used as active");
+    createBuffNerfSlider("Single-type", "singleType", home, "Set a chance for buffed/nerfed Single-type Pokémon if used as active");
+    createBuffNerfSlider("Dual-type", "dualType", home, "Set a chance for buffed/nerfed Dual-type Pokémon if used as active");
     
     var bstPanels = $("<div class='panel panel-default topMargin'></div>");
     home.append(bstPanels);
@@ -381,6 +387,38 @@ function createInputSlider(label, id, container, disabler, hint) {
     });
     return obj;
 }
+function createBuffNerfSlider(label, id, container, hint) {
+    var obj = $("<div class='form-inline slidersTabForms well well-sm'></div>");
+    obj.appendTo(container);
+    
+    obj.append("<span class='buffNerfLabel'>" + label + "</span> ")
+    
+    if (hint) {
+        obj.append(tip(hint));
+    }
+    
+    var check = $(' <label><input type="checkbox" id="default'+id+'" name="default'+id+'" value="Default"> Use default settings</label>');
+    obj.append(check);
+    check.children("input[type=checkbox]").change(function(event) {
+        var obj = $(this);
+        var par = obj.parent().parent();
+        if (obj.prop("checked")) {
+            par.find(".ruleSlider").slider("disable");
+            par.find(".sliderInput").prop("disabled", true);
+        } else {
+            par.find(".ruleSlider").slider("enable");
+            par.find(".sliderInput").prop("disabled", false);
+        }
+    });
+    obj.append("<br>");
+    var slider1 = createInputSlider("Buff", id + "Buff", obj);
+    var slider2 = createInputSlider("Nerf", id + "Nerf", obj);
+    
+    slider1.addClass("inlineSlider");
+    slider2.addClass("inlineSlider");
+    
+    return obj;
+}
 function createDualSlider(container, label, id, range, tipPos) {
     var dualGroup = $('<div class="form-group"><input id="'+id+'Lower" ref="lower" class="form-control dualSliderInput" type="number" value="'+range[0]+'" min="100" max="999"><span class="sliderSep2"></span><div class="panel-inline"></div><span class="sliderSep2"><input id="'+id+'Upper" ref="upper" class="form-control dualSliderInput" type="number" value="'+range[1]+'" min="100" max="999"></div>');
     container.append(dualGroup);
@@ -474,6 +512,24 @@ function loadRules(rules) {
             $(".ruleSlider[ref=inver]").slider("setValue", rules.inver.chance * 100, true, true);
         }
     }
+    if ("invertedBST" in rules) {
+        obj = $("#defaultinvertedBST");
+        obj.prop("checked", rules.invertedBST === "default");
+        obj.trigger("change");
+        
+        if (rules.invertedBST !== "default") {
+            $(".ruleSlider[ref=invertedBST]").slider("setValue", rules.invertedBST.chance * 100, true, true);
+        }
+    }
+    if ("defensive" in rules) {
+        obj = $("#defaultdefensive");
+        obj.prop("checked", rules.defensive === "default");
+        obj.trigger("change");
+        
+        if (rules.defensive !== "default") {
+            $(".ruleSlider[ref=defensive]").slider("setValue", rules.defensive.chance * 100, true, true);
+        }
+    }
     if ("excludeTypes" in rules) {
         obj = $("#defaultNerfs");
         obj.prop("checked", rules.excludeTypes === "default");
@@ -528,22 +584,65 @@ function loadRules(rules) {
         obj.trigger("change");
         
         if (rules.bst !== "default") {
-            if ("min" in rules.bst) {
-                val = rules.bst.min;
+            val = rules.bst.min || 0;
+            $(".ruleSlider[ref=chanceMinBST]").slider("setValue", rules.bst.minChance * 100, true, true);
+            if (val > 0) {
+                val = rules.bst.min || 0;
                 if (typeof val === "number") {
                     val = [val, val+1];
                 }
                 $(".dualSlider[ref=minBST]").slider("setValue", val, true, true);
-                $(".ruleSlider[ref=chanceMinBST]").slider("setValue", rules.bst.minChance * 100, true, true);
             }
-            if ("max" in rules.bst) {
-                val = rules.bst.max;
+            
+            val = rules.bst.maxChance || 0;
+            $(".ruleSlider[ref=chanceMaxBST]").slider("setValue", val * 100, true, true);
+            if (val > 0) {
+                val = rules.bst.max || 0;
                 if (typeof val === "number") {
                     val = [val, val+1];
                 }
                 $(".dualSlider[ref=maxBST]").slider("setValue", val, true, true);
-                $(".ruleSlider[ref=chanceMaxBST]").slider("setValue", rules.bst.maxChance * 100, true, true);
             }
+        }
+    }
+    
+    if ("shiny" in rules) {
+        obj = $("#defaultshiny");
+        obj.prop("checked", rules.shiny === "default");
+        obj.trigger("change");
+        
+        if (rules.shiny !== "default") {
+            val = rules.shiny.nerf || 0;
+            $(".ruleSlider[ref=shinyNerf]").slider("setValue", val * 100, true, true);
+            
+            val = rules.shiny.buff || 0;
+            $(".ruleSlider[ref=shinyBuff]").slider("setValue", val * 100, true, true);
+        }
+    }
+    if ("singleType" in rules) {
+        obj = $("#defaultsingleType");
+        obj.prop("checked", rules.singleType === "default");
+        obj.trigger("change");
+        
+        if (rules.singleType !== "default") {
+            val = rules.singleType.nerf || 0;
+            $(".ruleSlider[ref=singleTypeNerf]").slider("setValue", val * 100, true, true);
+            
+            val = rules.singleType.buff || 0;
+            $(".ruleSlider[ref=singleTypeBuff]").slider("setValue", val * 100, true, true);
+        }
+    }
+    if ("dualType" in rules) {
+        obj = $("#defaultdualType");
+        obj.prop("checked", rules.dualType === "default");
+        obj.trigger("change");
+        
+        if (rules.dualType !== "default") {
+            val = rules.dualType.nerf || 0;
+            $(".ruleSlider[ref=dualTypeNerf]").slider("setValue", val * 100, true, true);
+            
+            val = rules.dualType.buff || 0;
+            $(".ruleSlider[ref=dualTypeBuff]").slider("setValue", val * 100, true, true);
         }
     }
     
@@ -618,6 +717,28 @@ function getRules() {
             };
         }
     }
+    //Inverted BST settings
+    if ($("#defaultinvertedBST").prop("checked")) {
+        rules.invertedBST = "default";
+    } else {
+        v = $(".ruleSlider[ref=invertedBST]").slider("getValue");
+        if (v > 0) {
+            rules.invertedBST = {
+                chance: (v/100).toFixedNumber(2)
+            };
+        }
+    }
+    //Defensive settings
+    if ($("#defaultdefensive").prop("checked")) {
+        rules.defensive = "default";
+    } else {
+        v = $(".ruleSlider[ref=defensive]").slider("getValue");
+        if (v > 0) {
+            rules.defensive = {
+                chance: (v/100).toFixedNumber(2)
+            };
+        }
+    }
     //No Legendaries settings
     if ($("#defaultnoLegendaries").prop("checked")) {
         rules.noLegendaries = "default";
@@ -627,6 +748,63 @@ function getRules() {
             rules.noLegendaries = {
                 chance: (v/100).toFixedNumber(2)
             };
+        }
+    }
+    //Buff/Nerf Shiny settings
+    if ($("#defaultshiny").prop("checked")) {
+        rules.shiny = "default";
+    } else {
+        v = $(".ruleSlider[ref=shinyNerf]").slider("getValue");
+        if (v > 0) {
+            if (!rules.shiny) {
+                rules.shiny = {};
+            }
+            rules.shiny.nerf = (v/100).toFixedNumber(2);
+        }
+        v = $(".ruleSlider[ref=shinyBuff]").slider("getValue");
+        if (v > 0) {
+            if (!rules.shiny) {
+                rules.shiny = {};
+            }
+            rules.shiny.buff = (v/100).toFixedNumber(2);
+        }
+    }
+    //Buff/Nerf Single-type settings
+    if ($("#defaultsingleType").prop("checked")) {
+        rules.singleType = "default";
+    } else {
+        v = $(".ruleSlider[ref=singleTypeNerf]").slider("getValue");
+        if (v > 0) {
+            if (!rules.singleType) {
+                rules.singleType = {};
+            }
+            rules.singleType.nerf = (v/100).toFixedNumber(2);
+        }
+        v = $(".ruleSlider[ref=singleTypeBuff]").slider("getValue");
+        if (v > 0) {
+            if (!rules.singleType) {
+                rules.singleType = {};
+            }
+            rules.singleType.buff = (v/100).toFixedNumber(2);
+        }
+    }
+    //Buff/Nerf Dual-type settings
+    if ($("#defaultdualType").prop("checked")) {
+        rules.dualType = "default";
+    } else {
+        v = $(".ruleSlider[ref=dualTypeNerf]").slider("getValue");
+        if (v > 0) {
+            if (!rules.dualType) {
+                rules.dualType = {};
+            }
+            rules.dualType.nerf = (v/100).toFixedNumber(2);
+        }
+        v = $(".ruleSlider[ref=dualTypeBuff]").slider("getValue");
+        if (v > 0) {
+            if (!rules.dualType) {
+                rules.dualType = {};
+            }
+            rules.dualType.buff = (v/100).toFixedNumber(2);
         }
     }
     //BST settings
@@ -794,8 +972,8 @@ function getRules() {
                 itemHolder.each(function(e, ob) {
                     var item = $(this);
                     var it = item.children("label").attr("value");
-                    var amt = item.children(".amtInput").prop("value");
-                    if (amt > 0) {
+                    var amt = parseInt(item.children(".amtInput").prop("value"), 10);
+                    if (!isNaN(amt) && amt > 0) {
                         thisSet[it] = amt;
                     }
                 });
