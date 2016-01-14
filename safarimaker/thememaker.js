@@ -1,4 +1,5 @@
 var pokemon = {};
+var pokeIndex = [];
 var theme = {
     name: "None",
     types: [], //Types that will be included. Pokémon only needs to match one of these types
@@ -12,7 +13,7 @@ var theme = {
 };
 var types = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy", "???"];
 var balls = ["safari", "great", "ultra", "master", "myth", "luxury", "quick", "heavy", "spy", "clone", "premier"];
-var items = ["safari", "great", "ultra", "master", "myth", "heavy", "quick", "luxury", "premier", "spy", "clone", "rock", "bait", "gacha", "mega", "stick", "itemfinder", "dust", "salt", "silver", "entry", "rare", "gem", "amulet", "honey", "soothe", "crown", "scarf", "battery", "eviolite", "box", "pearl", "stardust", "bigpearl", "starpiece", "nugget", "bignugget"];
+var items = ["safari", "great", "ultra", "master", "myth", "heavy", "quick", "luxury", "premier", "spy", "clone", "rock", "bait", "gacha", "mega", "stick", "itemfinder", "dust", "salt", "silver", "entry", "rare", "gem", "amulet", "honey", "soothe", "crown", "scarf", "battery", "eviolite", "box", "pearl", "stardust", "bigpearl", "starpiece", "nugget", "bignugget", "pack"];
 var legendaries = [144,145,146,150,151,243,244,245,249,250,251,377,378,379,380,381,382,383,384,385,386,480,481,482,483,484,485,486,487,488,490,491,492,493,494,638,639,640,641,642,643,644,645,646,647,648,649,716,717,718,719,720,721];
 /*
 "1": {
@@ -286,6 +287,7 @@ function loadData(poke, types1, types2, stats) {
         pokeOrdered[ordered[e]] = pokemon[ordered[e]];
     }
     pokemon = pokeOrdered;
+    pokeIndex = Object.keys(pokemon);
 
     buildPicker();
 }
@@ -429,6 +431,25 @@ function checkAll() {
     for (var e in pokemon) {
         markPokemon(e);
     }
+    /* loop(pokeIndex.length, function(i) {
+        markPokemon(pokeIndex[i]);
+    }); */
+    /* repeat(pokeIndex.length, function(i) {
+        markPokemon(pokeIndex[i]);
+    }); */
+}
+function repeat (n, f) {
+    var i = 0, end = {}, ret = null;
+    return Deferred.next(function () {
+        var t = (new Date()).getTime();
+        divide: {
+            do {
+                if (i >= n) break divide;
+                ret = f(i++);
+            } while ((new Date()).getTime() - t < 40);
+            return Deferred.call(arguments.callee);
+        }
+    });
 }
 function markPokemon(pokeId) {
     var icon = $(".pickerIcon[pokeid=" + pokeId + "]");

@@ -3,7 +3,7 @@ function createRulesUI () {
     home.addClass("topMargin");
     createInputSlider("Inverted Type Effectiveness", "inver", home, true, "Set a chance for Interted Type Effectiveness (Fire strong against Water, etc)");
     createInputSlider("Inverted BST Effectiveness", "invertedBST", home, true, "Set a chance for Interted BST Effectiveness (Lower BST = Better)");
-    createInputSlider("Defensive Mode", "defensive", home, true, "Set a chance for Defensive Mode (Catch bonus by resistance against Wild Pokémon)");
+    createInputSlider("Resistance Mode", "defensive", home, true, "Set a chance for Resistance Mode (Catch bonus by resistance against Wild Pokémon)");
     createInputSlider("Nerfed Legendaries", "noLegendaries", home, true, "Set a chance for nerfed Legendaries if used as active");
     
     createBuffNerfSlider("Shiny", "shiny", home, "Set a chance for buffed/nerfed Shiny if used as active");
