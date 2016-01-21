@@ -25,6 +25,33 @@ var Config = {
 try{
 delete Object.prototype.watch; //Necessary for /watch actions to work
 }catch(error){alert(error);}
+Object.defineProperty(Array.prototype, "contains", {
+    configurable: true,
+    enumerable: false,
+    value: function (value) {
+        return this.indexOf(value) > -1;
+    }
+});
+Object.defineProperty(Array.prototype, "random", {
+    configurable: true,
+    enumerable: false,
+    value: function () {
+        return this[sys.rand(0, this.length)];
+    }
+});
+Object.defineProperty(Array.prototype, "shuffle", {
+    configurable: true,
+    enumerable: false,
+    value: function () {
+        for (var i = this.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = this[i];
+            this[i] = this[j];
+            this[j] = temp;
+        }
+        return this;
+    }
+});
 
 var players = [
     { name: "Magikarp", ip: "636645705", color: "red" },
