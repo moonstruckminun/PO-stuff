@@ -1,5 +1,5 @@
 /*jshint "laxbreak":true,"shadow":true,"undef":true,"evil":true,"trailing":true,"proto":true,"withstmt":true*/
-/*global alert, document, sendToChat, Mafia, exports, mafiaChecker, mafiaStats*/
+/*global alert, document, sendToChat, Mafia, exports, mafiaChecker, mafiaStats, focusChat*/
 var theme, mafia, sys, mafiabot, utilities, stats, checker, SESSION, script, timer, savedTicks, is_command, nonFlashing, html_escape,
     ticks = 0,
     currentPlayer = null,
@@ -25,6 +25,7 @@ var Config = {
 try{
 delete Object.prototype.watch; //Necessary for /watch actions to work
 }catch(error){alert(error);}
+
 Object.defineProperty(Array.prototype, "contains", {
     configurable: true,
     enumerable: false,
@@ -129,7 +130,7 @@ function setPlayerSelector() {
         option = document.createElement("option");
         option.value = e;
         option.text = players[e].name;
-        if (e == 0) {
+        if (e === 0) {
             option.selected = true;
         }
         sele.add(option);
@@ -142,7 +143,7 @@ function updatePlayerSelector() {
     for (var e = 0; e < sele.options.length; e++) {
         option = sele.options[e];
         if (option.value in players) {
-            name = players[option.value].name
+            name = players[option.value].name;
             option.text = name + (mafia.gameInProgress() && mafia.isInGame(name) ? " (" + mafia.players[name].role.translation + ")" : "");
         }
     }
@@ -266,7 +267,7 @@ function loadTheme(raw) {
     focusChat();
 }
 function startNewGame(){
-    if (theme == undefined) {
+    if (theme === undefined) {
         sendChanAll("You must load a theme first!", mafiachan);
         return;
     }
@@ -340,7 +341,7 @@ function nextPhase() {
 function pauseGame() {
     if (mafia.state != "blank") {
         // sendChanAll(mafia.ticks + " / " + typeof mafia.ticks, mafiachan)
-        if (typeof mafia.ticks === "number" && isNaN(mafia.ticks) == false) {
+        if (typeof mafia.ticks === "number" && isNaN(mafia.ticks) === false) {
             savedTicks = mafia.ticks;
             mafia.ticks = "*";
             sendChanAll("Game Paused", mafiachan);
@@ -373,7 +374,7 @@ function tabName() {
     var startPos = box.selectionStart;
     var endPos = box.selectionEnd;
     if (startPos != box.value.length) {
-        stopTab();  
+        stopTab();
         return;
     }
     
@@ -396,7 +397,7 @@ function tabName() {
         var player;
         for (var p in players) {
             player = players[p];
-            if (player.name.toLowerCase().indexOf(part.toLowerCase()) == 0) {
+            if (player.name.toLowerCase().indexOf(part.toLowerCase()) === 0) {
                 tabList.push(player.name);
             }
         }
@@ -404,7 +405,7 @@ function tabName() {
         tabList.sort();
         if (mafia.gameInProgress()) {
             for (p = tabList.length; p >= 0; p--) {
-                if (mafia.isInGame(tabList[p]) == false) {
+                if (mafia.isInGame(tabList[p]) === false) {
                     tabList.splice(p, 1);
                 }
             }
@@ -440,161 +441,6 @@ function saveTemporaryMessage() {
 }
 
 /* STUFF START */
-function System() {
-    this.sendAll = function(msg, channel) {
-        if (channel === 0) {
-            // if (msg == "The Roles have been Decided! :") {
-            if (msg == "±Time: Night 1") {
-                gameStarted();
-            } else if (msg == "±Game: Type /Join to enter the game!") {
-                gamePrepared();
-            }
-            chatMessage(msg);
-        }
-    };
-    this.sendMessage = function(src, msg, channel) {
-        if (channel === 0) {
-            if (src == currentPlayer) {
-                chatMessage(msg);
-            } else if (src == "isPolka" && msg == "±Luxray: GAME ENDED") {
-                resetSimulator();
-            }
-        }
-    };
-    this.sendHtmlMessage = function(src, msg, channel) { 
-        if (channel === 0 && src == currentPlayer) {
-            sendToChat(msg);
-        }
-    };
-    this.sendHtmlAll = function(msg, channel) { 
-        if (channel === 0) {
-            sendToChat(msg);
-        }
-    };
-    
-    this.fexists = function(name) { return false; };
-    this.makeDir = function(name) { };
-    this.writeToFile = function(file, content) { return false; };
-    this.saveVal = function(file, val) { return false; };
-    this.getVal = function(file, val) { return 1; };
-    this.getFileContent = function(file) {
-        switch (file) {
-            case Config.Mafia.stats_file:
-                return '[{"who" : "Player", "what" : "default", "when" : 1387574278,"playerCount" : 10 }]';
-            case "mafialogs.txt":
-                return "";
-            case "scriptdata/mafiathemes/metadata.json":
-                return null;
-            default:
-                return "{}";
-        }
-    };
-    
-    this.ip = function(src) { return players[src].ip; };
-    this.id = function(name) {
-        if (name) {
-            if (name == "PolkaBot") {
-                return "isPolka";
-            }
-            for (var e = 0; e < players.length; e++) {
-                if (typeof name == "string" && name.toLowerCase() == players[e].name.toLowerCase()){
-                    return e;
-                }
-            }
-        }
-        return undefined;
-    };
-    this.playerIds = function() { return []; };
-    this.name = function(id) { return id in players ? players[id].name : null; };
-    this.channel = function(id) { return "Mafia"; };
-    this.time = function() { return new Date().getTime * 1000; };
-    this.loggedIn = function(src) { return false; };
-    this.webcall = function(url, callbacl) { this.sendAll("This command is disabled."); };
-    this.existChannel = function(name) { return false; };
-    this.isInChannel = function(src, channel) { return false; };
-    this.channelId = function(name) { return 0; };
-    this.playersOfChannel = function(channel) { return []; };
-    this.rand = function(min, max) { return min + Math.floor(Math.random() * max); };
-    this.auth = function(src) { return 0; };
-    this.dbAuths = function(src) { return []; };
-    this.dbRegistered = function(name) { return true; };
-    this.getColor = function(src) { return players[src].color; };
-    this.kick = function(src, mafiachan) { return false; };
-}
-function Bot(name) {
-    this.name = name;
-    this.formatMsg = function(message)
-    {
-        return "±" + this.name + ": " + message;
-    };
-    /* Shortcuts to sys functions */
-    this.sendAll = function(message, channel)
-    {
-        if (channel === undefined || channel == -1)
-            sendChanAll(this.formatMsg(message),-1);
-        else
-            sendChanAll(this.formatMsg(message), channel);
-    };
-
-    this.sendMessage = function(tar, message, channel)
-    {
-        if (channel === undefined)
-            sys.sendMessage(tar, this.formatMsg(message));
-        else
-            sys.sendMessage(tar, this.formatMsg(message), channel);
-    };
-
-    this.sendMainTour = function(message)
-    {
-        this.sendAll(message, 0);
-        // Relies on Tournaments channel
-        this.sendAll(message, sys.channelId("Tournaments"));
-    };
-    /* Following two rely on global channel parameter */
-    this.sendChanMessage = function(tar, message)
-    {
-        this.sendMessage(tar, message, channel);
-    };
-    this.sendChanAll = function(message)
-    {
-        this.sendAll(message, channel);
-    };
-}
-function require(scr) {
-    switch (scr) {
-        case "utilities.js":
-            return utilities;
-        case "mafiachecker.js":
-            return checker;
-        case "mafiastats.js":
-            return stats;
-    }
-}
-var updateModule = function updateModule(module_name, callback) { };
-function sendChanAll(message, chan_id, channel) {
-    if((chan_id === undefined && channel === undefined) || chan_id == -1)
-    {
-        sys.sendAll(message);
-    } else if(chan_id === undefined && channel !== undefined)
-    {
-       sys.sendAll(message, channel);
-    } else if(chan_id !== undefined)
-    {
-        sys.sendAll(message, chan_id);
-    }
-}
-function sendChanHtmlAll(message, chan_id) {
-    if((chan_id === undefined && channel === undefined) || chan_id == -1)
-    {
-        sys.sendHtmlAll(message);
-    } else if(chan_id === undefined && channel !== undefined)
-    {
-        sys.sendHtmlAll(message, channel);
-    } else if(chan_id !== undefined)
-    {
-        sys.sendHtmlAll(message, chan_id);
-    }
-}
 
 /* STUFF END */
 
@@ -602,17 +448,17 @@ function key(a,b) {
     return a + "*" + sys.ip(b);
 }
 function processInput(msg) {
-    if (currentPlayer == null) {
+    if (currentPlayer === null) {
         sendToChat("<b>Pick a player!</b>");
     } else {
         if (utilities.is_command(msg)) {
-            if (mafia.handleCommand(currentPlayer, msg.substr(1), mafiachan) != true) {
+            if (mafia.handleCommand(currentPlayer, msg.substr(1), mafiachan) !== true) {
                 chatMessage("±CommandBot: This command doesn't exist");
             }
         } else {
             var player = players[currentPlayer];
             var msg = utilities.html_escape(msg);
-            if (mafia.beforeChatMessage(currentPlayer, msg, mafiachan) == false) {
+            if (mafia.beforeChatMessage(currentPlayer, msg, mafiachan) === false) {
                 // sendToChat("<font color='" + player.color + "'>" + timestamp() + " <b>" + player.name + ":</b></font> " + msg);
                 chatMessage(player.name + ": " + msg);
                 // sendToChat("<font color='" + player.color + "'>" + timestamp() + " <b>" + player.name + ":</b></font> " + msg);
@@ -630,7 +476,7 @@ function processInput(msg) {
     tempMsg = "";
 }
 function chatMessage(msg) {
-    if (msg == "") {
+    if (msg === "") {
         sendToChat("");
     } else {
         msg = utilities.html_escape(msg);
@@ -646,7 +492,7 @@ function chatMessage(msg) {
             }
             
             sendToChat("<font color=" + color + ">"+timestamp() + " <b>" + msg.substr(0, msg.indexOf(":")+1) + "</b></font>" + msg.substr(msg.indexOf(":")+1));
-        } 
+        }
         else if (msg.indexOf("***") === 0) {
             sendToChat("<font color=Fuchsia>"+timestamp() + " " + msg + "</font>");
         }
@@ -695,3 +541,31 @@ function shuffle(o) {
     for (var j, x, i = o.length; i; j = parseInt(Math.random() * i, 10), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
 }
+
+$(document).ready(function () {
+    $("#chat").on("click", "a", function (event) {
+		var ref = $(this).attr("href");
+        
+        if (ref.indexOf("po:") === 0) {
+            var act = ref.substr(3);
+            var param = act.substr(act.indexOf("/") + 1);
+            if (param) {
+                act = act.substr(0, act.indexOf("/"));
+            }
+            switch (act) {
+                case "setmsg":
+                    $("#chatbox").val(param);
+                    event.preventDefault();
+                break;
+                case "appendmsg":
+                    $("#chatbox").val($("#chatbox").val() + param);
+                    event.preventDefault();
+                break;
+                case "send":
+                    processInput(param);
+                    event.preventDefault();
+                break;
+            }
+        }
+	}); 
+});

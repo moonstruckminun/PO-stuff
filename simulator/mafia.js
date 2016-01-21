@@ -620,13 +620,13 @@ function Mafia(mafiachan) {
             }
             return theme;
         } catch (err) {
-            msgAll("Couldn't use theme " + plain_theme.name + ": " + err + ".");
+            msgAll("Couldn't use theme " + plain_theme.name + ": " + err + ". ");
         }
     };
     ThemeManager.prototype.loadThemes = function () {
         if (typeof sys !== "object") return;
         this.themes = {};
-        this.themes[defaultThemeName] = this.loadTheme(defaultThemeName);
+        this.themes[defaultThemeName] = this.loadTheme(defaultTheme);
         var content = sys.getFileContent("scriptdata/mafiathemes/metadata.json");
         if (!content) return;
         var parsed = JSON.parse(content);
