@@ -56,11 +56,11 @@ function System() {
 	this.sendAll = function (msg, channel) {
 		if (channel === 0) {
 			// if (msg == "The Roles have been Decided! :") {
-			if (msg == "±Time: Night 1") {
+			/* if (msg == "±Time: Night 1") {
 				gameStarted();
 			} else if (msg == "±Game: Type /Join to enter the game!") {
 				gamePrepared();
-			}
+			} */
 			chatMessage(msg);
 		}
 	};
@@ -80,6 +80,12 @@ function System() {
 	};
 	this.sendHtmlAll = function (msg, channel) {
 		if (channel === 0) {
+            var rawmsg = strip(msg).trim();
+            if (rawmsg == "±Time: Night 1") {
+				gameStarted();
+			} else if (rawmsg == "±Game: Type /Join to enter the game!") {
+				gamePrepared();
+			}
 			sendToChat(msg);
 		}
 	};
@@ -207,6 +213,17 @@ function Bot(name) {
 	this.sendChanAll = function (message) {
 		this.sendAll(message, channel);
 	};
+	this.sendHtmlAll = function (msg, channel) {
+		if (channel === 0) {
+            /* var rawmsg = strip(msg).trim();
+            if (rawmsg == "±Time: Night 1") {
+				gameStarted();
+			} else if (rawmsg == "±Game: Type /Join to enter the game!") {
+				gamePrepared();
+			} */
+			sendToChat(this.format(msg));
+		}
+	};
 }
 function require(scr) {
 	switch (scr) {
@@ -236,4 +253,10 @@ function sendChanHtmlAll(message, chan_id) {
 	} else if (chan_id !== undefined) {
 		sys.sendHtmlAll(message, chan_id);
 	}
+}
+function strip(html)
+{
+   var tmp = document.implementation.createHTMLDocument("New").body;
+   tmp.innerHTML = html;
+   return tmp.textContent || tmp.innerText || "";
 }
