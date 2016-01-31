@@ -391,7 +391,7 @@ function createBuffNerfSlider(label, id, container, hint) {
     var obj = $("<div class='form-inline slidersTabForms well well-sm'></div>");
     obj.appendTo(container);
     
-    obj.append("<span class='buffNerfLabel'>" + label + "</span> ")
+    obj.append("<span class='buffNerfLabel'>" + label + "</span> ");
     
     if (hint) {
         obj.append(tip(hint));
@@ -480,14 +480,16 @@ function loadRules(rules) {
         obj.trigger("change");
         $(".rulesRadio[value=custom]").prop("checked", false);
         $(".rulesRadio[value=none]").prop("checked", false);
-        return;
+        // return;
+        rules = {};
     } else if (Object.keys(rules).length === 0) {
         $(".rulesRadio[value=default]").prop("checked", false);
         $(".rulesRadio[value=custom]").prop("checked", false);
         obj = $(".rulesRadio[value=none]");
         obj.prop("checked", true);
         obj.trigger("change");
-        return;
+        // return;
+        rules = {};
     }
     
     obj = $(".rulesRadio[value=custom]");
@@ -502,6 +504,11 @@ function loadRules(rules) {
         if (rules.noLegendaries !== "default") {
             $(".ruleSlider[ref=noLegendaries]").slider("setValue", rules.noLegendaries.chance * 100, true, true);
         }
+    } else {
+        obj = $("#defaultnoLegendaries");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=noLegendaries]").slider("setValue", 0, true, true);
     }
     if ("inver" in rules) {
         obj = $("#defaultinver");
@@ -511,6 +518,11 @@ function loadRules(rules) {
         if (rules.inver !== "default") {
             $(".ruleSlider[ref=inver]").slider("setValue", rules.inver.chance * 100, true, true);
         }
+    } else {
+        obj = $("#defaultinver");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=inver]").slider("setValue", 0, true, true);
     }
     if ("invertedBST" in rules) {
         obj = $("#defaultinvertedBST");
@@ -520,6 +532,11 @@ function loadRules(rules) {
         if (rules.invertedBST !== "default") {
             $(".ruleSlider[ref=invertedBST]").slider("setValue", rules.invertedBST.chance * 100, true, true);
         }
+    } else {
+        obj = $("#defaultinvertedBST");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=invertedBST]").slider("setValue", 0, true, true);
     }
     if ("defensive" in rules) {
         obj = $("#defaultdefensive");
@@ -529,6 +546,11 @@ function loadRules(rules) {
         if (rules.defensive !== "default") {
             $(".ruleSlider[ref=defensive]").slider("setValue", rules.defensive.chance * 100, true, true);
         }
+    } else {
+        obj = $("#defaultdefensive");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=defensive]").slider("setValue", 0, true, true);
     }
     if ("excludeTypes" in rules) {
         obj = $("#defaultNerfs");
@@ -544,6 +566,18 @@ function loadRules(rules) {
                 }
                 holder.find(".ruleSlider[ref=" + t + "]").slider("setValue", (t in rules.excludeTypes ? rules.excludeTypes[t] * 100 : 0), true, true);
             }
+        }
+    } else {
+        obj = $("#defaultNerfs");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        holder = $("#customNerfsPanel");
+        for (e = 0; e < types.length; e++) {
+            t = types[e];
+            if (t == "???") {
+                continue;
+            }
+            holder.find(".ruleSlider[ref=" + t + "]").slider("setValue", 0, true, true);
         }
     }
     if ("bonusTypes" in rules) {
@@ -561,6 +595,18 @@ function loadRules(rules) {
                 holder.find(".ruleSlider[ref=" + t + "]").slider("setValue", (t in rules.bonusTypes ? rules.bonusTypes[t] * 100 : 0), true, true);
             }
         }
+    } else {
+        obj = $("#defaultBuffs");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        holder = $("#customBuffsPanel");
+        for (e = 0; e < types.length; e++) {
+            t = types[e];
+            if (t == "???") {
+                continue;
+            }
+            holder.find(".ruleSlider[ref=" + t + "]").slider("setValue", 0, true, true);
+        }
     }
     if ("excludeBalls" in rules) {
         obj = $("#defaultBalls");
@@ -576,6 +622,18 @@ function loadRules(rules) {
                 }
                 holder.find(".ruleSlider[ref=" + t + "]").slider("setValue", (t in rules.excludeBalls ? rules.excludeBalls[t] * 100 : 0), true, true);
             }
+        }
+    } else {
+        obj = $("#defaultBalls");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        holder = $("#forbiddenBallsPanel");
+        for (e = 0; e < balls.length; e++) {
+            t = balls[e];
+            if (t == "???") {
+                continue;
+            }
+            holder.find(".ruleSlider[ref=" + t + "]").slider("setValue", 0, true, true);
         }
     }
     if ("bst" in rules) {
@@ -604,6 +662,15 @@ function loadRules(rules) {
                 $(".dualSlider[ref=maxBST]").slider("setValue", val, true, true);
             }
         }
+    } else {
+        obj = $("#defaultBST");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=chanceMinBST]").slider("setValue", 0, true, true);
+        $(".ruleSlider[ref=chanceMaxBST]").slider("setValue", 0, true, true);
+        
+        $(".dualSlider[ref=minBST]").slider("setValue", [230, 400], true, true);
+        $(".dualSlider[ref=maxBST]").slider("setValue", [400, 531], true, true);
     }
     
     if ("shiny" in rules) {
@@ -618,6 +685,12 @@ function loadRules(rules) {
             val = rules.shiny.buff || 0;
             $(".ruleSlider[ref=shinyBuff]").slider("setValue", val * 100, true, true);
         }
+    } else {
+        obj = $("#defaultshiny");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=shinyNerf]").slider("setValue", 0, true, true);
+        $(".ruleSlider[ref=shinyBuff]").slider("setValue", 0, true, true);
     }
     if ("singleType" in rules) {
         obj = $("#defaultsingleType");
@@ -631,6 +704,12 @@ function loadRules(rules) {
             val = rules.singleType.buff || 0;
             $(".ruleSlider[ref=singleTypeBuff]").slider("setValue", val * 100, true, true);
         }
+    } else {
+        obj = $("#defaultsingleType");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=singleTypeNerf]").slider("setValue", 0, true, true);
+        $(".ruleSlider[ref=singleTypeBuff]").slider("setValue", 0, true, true);
     }
     if ("dualType" in rules) {
         obj = $("#defaultdualType");
@@ -644,6 +723,12 @@ function loadRules(rules) {
             val = rules.dualType.buff || 0;
             $(".ruleSlider[ref=dualTypeBuff]").slider("setValue", val * 100, true, true);
         }
+    } else {
+        obj = $("#defaultdualType");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=dualTypeNerf]").slider("setValue", 0, true, true);
+        $(".ruleSlider[ref=dualTypeBuff]").slider("setValue", 0, true, true);
     }
     
     if ("onlyTypes" in rules) {
@@ -661,6 +746,13 @@ function loadRules(rules) {
                 addList(holder, types, "type", rules.onlyTypes.sets[e]);
             }
         }
+    } else {
+        obj = $("#defaultOnlyTypes");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=onlyTypesPanelChance]").slider("setValue", 0, true, true);
+        holder = $("#customOnlyTypesPanel").find(".listHolder");
+        holder.find(".setList").remove();
     }
     if ("onlyBalls" in rules) {
         obj = $("#defaultOnlyBalls");
@@ -677,6 +769,13 @@ function loadRules(rules) {
                 addList(holder, balls, "ball", rules.onlyBalls.sets[e]);
             }
         }
+    } else {
+        obj = $("#defaultOnlyBalls");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        $(".ruleSlider[ref=onlyBallsPanelChance]").slider("setValue", 0, true, true);
+        holder = $("#customOnlyBallsPanel").find(".listHolder");
+        holder.find(".setList").remove();
     }
     if ("rewards" in rules) {
         obj = $("#defaultRewards");
@@ -693,6 +792,12 @@ function loadRules(rules) {
                 addSet(holder, items, "item", rules.rewards.sets[e], rules.rewards.chance[e]);
             }
         }
+    } else {
+        obj = $("#defaultRewards");
+        obj.prop("checked", false);
+        obj.trigger("change");
+        holder = $("#customRewardsPanel").find(".listHolder");
+        holder.find(".setList").remove();
     }
 }
 function getRules() {

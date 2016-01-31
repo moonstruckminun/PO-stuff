@@ -1,5 +1,6 @@
 var pokemon = {};
 var pokeIndex = [];
+var allPickers = {};
 var theme = {
     name: "None",
     types: [], //Types that will be included. Pokémon only needs to match one of these types
@@ -292,11 +293,13 @@ function loadData(poke, types1, types2, stats) {
     buildPicker();
 }
 function buildPicker(){
-    var holder = $('#pokePicker'), out = "", data, title;
+    var holder = $('#pokePicker'), out = "", data, title, pick;
     for (var e in pokemon) {
         data = pokemon[e];
         title = "#" + data.icon + " " + data.name + " | " + data.types.join("/") + " | BST " + data.bst;
-        out+="<img class='pickerIcon"+(data.mega ? " mega" : (data.form != 0 ? " altform" : ""))+(legendaries.indexOf(parseInt(data.base, 10)) !== -1 ? " legendary" : "")+"' pokeid='"+e+"' src='icons/" + data.icon + ".png' title='" + title + "'>";
+        pick = $("<img class='pickerIcon"+(data.mega ? " mega" : (data.form != 0 ? " altform" : ""))+(legendaries.indexOf(parseInt(data.base, 10)) !== -1 ? " legendary" : "")+"' pokeid='"+e+"' src='icons/" + data.icon + ".png' title='" + title + "'>");
+        holder.append(pick);
+        allPickers[e] = pick;
     }
     holder.append(out);
     
@@ -452,9 +455,11 @@ function repeat (n, f) {
     });
 }
 function markPokemon(pokeId) {
-    var icon = $(".pickerIcon[pokeid=" + pokeId + "]");
+    // var icon = $(".pickerIcon[pokeid=" + pokeId + "]");
+    var icon = allPickers[pokeId];
     if (validForTheme(pokeId)) {
         if (!icon.hasClass("included")) {
+            console.log("Including " + pokeId);
             icon.addClass("included");
             icon.removeClass("excluded");
         }
