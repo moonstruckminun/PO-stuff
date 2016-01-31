@@ -41,7 +41,8 @@ $(document).ready(function () {
         if (!isNaN(val)) {
             var high = $("#ex2").slider("getValue")[1];
             $("#ex2").slider("setValue", [val, high]);
-            activateBstApply();
+            // activateBstApply();
+            applyBst();
         }
     });
     $("#bstMax").on("input", function(event) {
@@ -49,14 +50,16 @@ $(document).ready(function () {
         if (!isNaN(val)) {
             var low = $("#ex2").slider("getValue")[0];
             $("#ex2").slider("setValue", [low, val]);
-            activateBstApply();
+            // activateBstApply();
+            applyBst();
         }
     });
     $("#ex2").slider({});
     $("#ex2").change(function(slideEvt) {
         $("#bstMin").val(slideEvt.value.newValue[0]);
         $("#bstMax").val(slideEvt.value.newValue[1]);
-        activateBstApply();
+        // activateBstApply();
+        applyBst();
     });
     $("#ex2").slider("setValue", [parseInt($("#bstMin").val(), 10), parseInt($("#bstMax").val(), 10)]);
     
