@@ -17,6 +17,8 @@
 		<script type="text/javascript" src="thememaker.js"></script>
 		<script type="text/javascript" src="ruleswindow.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
+        
+        <link rel="icon" href="favicon.png">
 	</head>
 	<body>
         <div class="container-fluid">
@@ -97,7 +99,9 @@
             </div>
             
             <!-- Area where all Pokémon Icons will appear -->
-            <div id='pokePicker'></div>
+            <div id='pokePicker'>
+                <div id='loadingIcons' class='alert alert-warning' ><strong>Loading Pokémon Data</strong>, please wait...</div>
+            </div>
             
             <!-- Import Theme Modal -->
             <div id="importWindow" class="modal fade" role="dialog">

@@ -30,7 +30,7 @@ Number.prototype.toFixedNumber = function(x, base){
   return +( Math.round(this*pow) / pow );
 }
 $(document).ready(function () {
-    loadData(pokeData, type1Data, type2Data, statsData);
+    // loadData(pokeData, type1Data, type2Data, statsData);
     
     /* ****************************** */
     /*      BST SLIDER SETUP          */
@@ -210,6 +210,11 @@ $(document).ready(function () {
     showRules();
     
     $('[data-toggle="tooltip"]').tooltip(); 
+    
+    setTimeout(function() {
+        $("#loadingIcons").remove();
+        loadData(pokeData, type1Data, type2Data, statsData);
+    }, 50);
 });
 
 function hideMega() {
