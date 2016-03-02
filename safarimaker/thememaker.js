@@ -14,7 +14,7 @@ var theme = {
 };
 var types = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy", "???"];
 var balls = ["safari", "great", "ultra", "master", "myth", "luxury", "quick", "heavy", "spy", "clone", "premier"];
-var items = ["safari", "great", "ultra", "master", "myth", "heavy", "quick", "luxury", "premier", "spy", "clone", "rock", "bait", "gacha", "mega", "stick", "itemfinder", "dust", "salt", "silver", "entry", "rare", "gem", "amulet", "honey", "soothe", "crown", "scarf", "battery", "eviolite", "box", "pearl", "stardust", "bigpearl", "starpiece", "nugget", "bignugget", "pack"];
+var items = ["safari", "great", "ultra", "master", "myth", "heavy", "quick", "luxury", "premier", "spy", "clone", "rock", "bait", "gacha", "mega", "stick", "itemfinder", "dust", "salt", "silver", "entry", "rare", "gem", "amulet", "honey", "soothe", "crown", "scarf", "battery", "eviolite", "box", "pearl", "stardust", "bigpearl", "starpiece", "nugget", "bignugget", "pack", "fragment", "egg", "bright"];
 var legendaries = [144,145,146,150,151,243,244,245,249,250,251,377,378,379,380,381,382,383,384,385,386,480,481,482,483,484,485,486,487,488,490,491,492,493,494,638,639,640,641,642,643,644,645,646,647,648,649,716,717,718,719,720,721];
 /*
 "1": {
@@ -214,6 +214,7 @@ $(document).ready(function () {
     setTimeout(function() {
         $("#loadingIcons").remove();
         loadData(pokeData, type1Data, type2Data, statsData);
+        hideMega();
     }, 50);
 });
 

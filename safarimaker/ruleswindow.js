@@ -201,9 +201,15 @@ function addList(listHolder, list, label, content) {
         obj.remove();
     });
     
-    var selector = $(' <div class="btn-group listOptions"><button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">Add ' + label + ' <span class="caret"></span></button><ul class="dropdown-menu" role="menu"></ul></div>');
+    var selector = $(' <div class="btn-group listOptions"><button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">Add ' + label + ' <span class="caret"></span></button><ul class="dropdown-menu multi-column columns-2" role="menu"></ul></div>');
     obj.append(selector);
     selector.popover();
+        
+    var dropdown = selector.find(".multi-column");
+    var dropRow = $("<div class='row'></div>");
+    dropdown.append(dropRow);
+    dropRow.append("<div class='col-sm-6'><ul class='multi-column-dropdown'></ul></div>");
+    dropRow.append("<div class='col-sm-6'><ul class='multi-column-dropdown'></ul></div>");
     
     var itemsHolder = $("<div class='itemHolder'></div>");
     obj.append(itemsHolder);
@@ -230,10 +236,10 @@ function addList(listHolder, list, label, content) {
         addItem(obj, elem);
     };
     
-    var ul = selector.find("ul.dropdown-menu"), li;
+    var ul = selector.find("ul.multi-column-dropdown"), li;
     for (var e = 0; e < list.length; e++) {
         li = $("<li><a href='#' ref='" + list[e] + "'>" + list[e] + "</a></li>");
-        ul.append(li);
+        $(ul.get(e%2)).append(li);
         li.click(clickItem);
     }
     
@@ -262,9 +268,18 @@ function addSet(listHolder, list, label, content, chance) {
         obj.remove();
     });
     
-    var selector = $(' <div class="btn-group listOptions"><button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">Add ' + label + ' <span class="caret"></span></button><ul class="dropdown-menu" role="menu"></ul></div>');
+    // var selector = $(' <div class="btn-group listOptions"><button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">Add ' + label + ' <span class="caret"></span></button><ul class="dropdown-menu multi-column-dropdown" role="menu"><li><ul class="col-sm-3"></ul><ul class="col-sm-3"></ul><ul class="col-sm-3"></ul><ul class="col-sm-3"></ul></li></ul></div>');
+    var selector = $(' <div class="btn-group listOptions"><button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">Add ' + label + ' <span class="caret"></span></button><ul class="dropdown-menu multi-column columns-4" role="menu"></ul></div>');
     col1.append(selector);
     selector.popover();
+        
+    var dropdown = selector.find(".multi-column");
+    var dropRow = $("<div class='row'></div>");
+    dropdown.append(dropRow);
+    dropRow.append("<div class='col-sm-3'><ul class='multi-column-dropdown'></ul></div>");
+    dropRow.append("<div class='col-sm-3'><ul class='multi-column-dropdown'></ul></div>");
+    dropRow.append("<div class='col-sm-3'><ul class='multi-column-dropdown'></ul></div>");
+    dropRow.append("<div class='col-sm-3'><ul class='multi-column-dropdown'></ul></div>");
     
     var col2 = $("<div class='col-md-4 tightCol'></div>");
     obj.append(col2);
@@ -277,36 +292,10 @@ function addSet(listHolder, list, label, content, chance) {
     var chanceSlider = createInputSlider("Chance", "chance", col3);
     chanceSlider.addClass("pull-right");
     chanceSlider.removeClass("slidersTabForms");
-    /* 
-    var addItem = function(event) {
-        var obj = $(this);
-        if (obj.is(".disabled")) {
-            event.preventDefault();
-            return;
-        }
-        obj.addClass("disabled");
-        var elem = obj.find("a").attr("ref");
-        
-        // var item = $("<span class=''>" + elem + "</span>");
-        // var sele = "<div class='custombst form-group' key='" + id + "' ><label>" + data.name + ":</label> <input type='number' class='bstInput form-control' key='" + id + "' value='" + bst + "' ></div>";
-        var item = $("<div class='itemAmount form-group' ><label value='" + elem + "'>" + elem + ":</label> <input type='number' class='amtInput form-control' value='1' ></div>");
-        itemsHolder.append(item);
-        
-        // item.click(function(evt){
-            // var it = $(this);
-            // it.remove();
-            // obj.removeClass("disabled");
-        // });
-    }; */
+    
     var addItem = function(obj, elem, amt) {
         var item = $("<div class='itemAmount form-group' ><label value='" + elem + "'>" + elem + ":</label> <input type='number' class='amtInput form-control' value='" + amt + "' ></div>");
         itemsHolder.append(item);
-        
-        /* item.click(function(evt){
-            var it = $(this);
-            it.remove();
-            obj.removeClass("disabled");
-        }); */
     };
     var clickItem = function(event) {
         var obj = $(this);
@@ -320,10 +309,10 @@ function addSet(listHolder, list, label, content, chance) {
         addItem(obj, elem, 1);
     };
     
-    var ul = selector.find("ul.dropdown-menu"), li;
+    var ul = selector.find("ul.multi-column-dropdown"), li;
     for (var e = 0; e < list.length; e++) {
         li = $("<li><a href='#' ref='" + list[e] + "'>" + list[e] + "</a></li>");
-        ul.append(li);
+        $(ul.get(e%4)).append(li);
         li.click(clickItem);
     }
     
