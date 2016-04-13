@@ -13,8 +13,8 @@ var theme = {
     icon: 0
 };
 var types = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy", "???"];
-var balls = ["safari", "great", "ultra", "master", "myth", "luxury", "quick", "heavy", "spy", "clone", "premier"];
-var items = ["safari", "great", "ultra", "master", "myth", "heavy", "quick", "luxury", "premier", "spy", "clone", "rock", "bait", "gacha", "mega", "stick", "itemfinder", "dust", "salt", "silver", "entry", "rare", "gem", "amulet", "honey", "soothe", "crown", "scarf", "battery", "eviolite", "box", "pearl", "stardust", "bigpearl", "starpiece", "nugget", "bignugget", "pack", "fragment", "egg", "bright"];
+var balls = ["safari", "great", "ultra", "master", "myth", "luxury", "quick", "heavy", "spy", "clone", "premier", "mono"];
+var items = ["safari", "great", "ultra", "master", "myth", "heavy", "quick", "luxury", "premier", "spy", "clone", "mono", "rock", "bait", "gacha", "mega", "stick", "itemfinder", "dust", "salt", "silver", "entry", "rare", "gem", "amulet", "honey", "soothe", "crown", "scarf", "battery", "eviolite", "box", "pearl", "stardust", "bigpearl", "starpiece", "nugget", "bignugget", "pack", "fragment", "egg", "bright", "water", "cherry", "materia", "fragment", "philosopher", "blkapricorn", "whtapricorn"];
 var legendaries = [144,145,146,150,151,243,244,245,249,250,251,377,378,379,380,381,382,383,384,385,386,480,481,482,483,484,485,486,487,488,490,491,492,493,494,638,639,640,641,642,643,644,645,646,647,648,649,716,717,718,719,720,721];
 /*
 "1": {
@@ -255,8 +255,8 @@ function loadData(poke, types1, types2, stats) {
     types2 = toRawObject(types2);
     stats = toRawObject(stats);
     
-    // var size = pokeRaw.length * 0.1, pkmn, t1, t2, bst,  e;
     var size = pokeRaw.length, pkmn, t1, t2, bst,  e;
+    // var size = 40, pkmn, t1, t2, bst,  e;
     for (e = 1; e < size; e++) {
         pkmn = convertRawValue(pokeRaw[e]);
         

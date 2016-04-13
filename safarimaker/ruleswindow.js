@@ -1,14 +1,15 @@
 function createRulesUI () {
     var home = $("#homePanel");
     home.addClass("topMargin");
-    createInputSlider("Inverted Type Effectiveness", "inver", home, true, "Set a chance for Interted Type Effectiveness (Fire strong against Water, etc)");
-    createInputSlider("Inverted BST Effectiveness", "invertedBST", home, true, "Set a chance for Interted BST Effectiveness (Lower BST = Better)");
+    createInputSlider("Inverted Type Effectiveness", "inver", home, true, "Set a chance for Inverted Type Effectiveness (Fire strong against Water, etc)");
+    createInputSlider("Inverted BST Effectiveness", "invertedBST", home, true, "Set a chance for Inverted BST Effectiveness (Lower BST = Better)");
     createInputSlider("Resistance Mode", "defensive", home, true, "Set a chance for Resistance Mode (Catch bonus by resistance against Wild Pokémon)");
     createInputSlider("Nerfed Legendaries", "noLegendaries", home, true, "Set a chance for nerfed Legendaries if used as active");
     
     createBuffNerfSlider("Shiny", "shiny", home, "Set a chance for buffed/nerfed Shiny if used as active");
     createBuffNerfSlider("Single-type", "singleType", home, "Set a chance for buffed/nerfed Single-type Pokémon if used as active");
     createBuffNerfSlider("Dual-type", "dualType", home, "Set a chance for buffed/nerfed Dual-type Pokémon if used as active");
+   
     
     var bstPanels = $("<div class='panel panel-default topMargin'></div>");
     home.append(bstPanels);
@@ -165,7 +166,7 @@ function createRewardsPage(core) {
     createSetMaker(container, list, label);
 }
 function createListMaker(container, list, label, hint) {
-    var addButton = $('<input type="button" class="btn btn-success newSetButton" name="addList" value="Add set" />');
+    var addButton = $('<br/><input type="button" class="btn btn-success newSetButton" name="addList" value="Add set" />');
     container.append(addButton);
     if (hint) {
         container.append(tip(hint));
@@ -211,7 +212,8 @@ function addList(listHolder, list, label, content) {
     dropRow.append("<div class='col-sm-6'><ul class='multi-column-dropdown'></ul></div>");
     dropRow.append("<div class='col-sm-6'><ul class='multi-column-dropdown'></ul></div>");
     
-    var itemsHolder = $("<div class='itemHolder'></div>");
+    
+    var itemsHolder = $("<div class='itemHolder labelHolder'></div>");
     obj.append(itemsHolder);
     
     var addItem = function(obj, elem) {
@@ -334,28 +336,29 @@ function createInputSlider(label, id, container, disabler, hint) {
     obj.appendTo(container);
     
     obj.append("<span class='sliderLabel'>" + label + "</span> ");
-    obj.append("<span class='sliderSep'></span> ");
-    obj.append("<input type='text' class='span2 ruleSlider' ref='" + id + "' value='' data-slider-min='0' data-slider-max='100' data-slider-step='0.1' data-slider-value='0'/> ");
-    obj.append("<span class='sliderSep'></span> ");
-    obj.append("<input class='form-control sliderInput' type='number' value='0' ref='" + id + "' min='0' max='100'> ");
+    if (hint) {
+        obj.append(tip(hint));
+    }
+    
+    var holder = $("<div class='slider-set'></div>");
+    obj.append(holder);
+    holder.append("<input type='text' class='span2 ruleSlider' ref='" + id + "' value='' data-slider-min='0' data-slider-max='100' data-slider-step='0.1' data-slider-value='0'/> ");
+    holder.append("<input class='form-control sliderInput' type='number' value='0' ref='" + id + "' min='0' max='100'> ");
     
     if (disabler) {
         var check = $('<label><input type="checkbox" id="default'+id+'" name="default'+id+'" value="Default"> Use default settings</label>');
         obj.append(check);
         check.children("input[type=checkbox]").change(function(event) {
             var obj = $(this);
-            var par = obj.parent();
+            var par = holder;
             if (obj.prop("checked")) {
-                par.siblings(".ruleSlider").slider("disable");
-                par.siblings(".sliderInput").prop("disabled", true);
+                par.find(".ruleSlider").slider("disable");
+                par.find(".sliderInput").prop("disabled", true);
             } else {
-                par.siblings(".ruleSlider").slider("enable");
-                par.siblings(".sliderInput").prop("disabled", false);
+                par.find(".ruleSlider").slider("enable");
+                par.find(".sliderInput").prop("disabled", false);
             }
         });
-    }
-    if (hint) {
-        obj.append(tip(hint));
     }
     
     obj.find(".ruleSlider").slider({
@@ -409,7 +412,7 @@ function createBuffNerfSlider(label, id, container, hint) {
     return obj;
 }
 function createDualSlider(container, label, id, range, tipPos) {
-    var dualGroup = $('<div class="form-group"><input id="'+id+'Lower" ref="lower" class="form-control dualSliderInput" type="number" value="'+range[0]+'" min="100" max="999"><span class="sliderSep2"></span><div class="panel-inline"></div><span class="sliderSep2"><input id="'+id+'Upper" ref="upper" class="form-control dualSliderInput" type="number" value="'+range[1]+'" min="100" max="999"></div>');
+    var dualGroup = $('<div class="form-group dualInput-set"><input id="'+id+'Lower" ref="lower" class="form-control dualSliderInput" type="number" value="'+range[0]+'" min="100" max="999"><div class="panel-inline"></div><input id="'+id+'Upper" ref="upper" class="form-control dualSliderInput" type="number" value="'+range[1]+'" min="100" max="999"></div>');
     container.append(dualGroup);
     
     var dualSlider = $('<input type="text" class="span2 dualSlider" ref="' + id + '" value="" data-slider-min="100" data-slider-max="999" data-slider-step="1" data-slider-value="['+range[0]+','+range[1]+']"/>');

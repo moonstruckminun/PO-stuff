@@ -24,47 +24,54 @@
         <div class="container-fluid">
         
             <!-- All the theme options go here -->
+            <div id="optionsBar">
+                <div class="btn-group">
+                    <input type="button" class="btn btn-primary" name="importButton" value="Import theme" data-toggle="modal" data-target="#importWindow"/>
+                    <input type="button" class="btn btn-primary" name="exportButton" value="Export theme" data-toggle="modal" data-target="#exportWindow" onclick="exportTheme()" />
+                </div>
+                <input type="button" class="btn btn-info" name="helpButton" id="helpButton" value="Help" data-toggle="modal" data-target="#helpWindow"/> 
+                <input type="button" class="btn btn-danger" name="clearButton" id="clearButtton" value="Reset" onclick="importTheme('{}')"/> 
+            </div>
             <div class='well well-sm' id='builder'>
-                <form class="form-inline builder-line" id='builder-header' role="form">
-                    <div class="form-group">
-                        <label for='themeName'>Name: </label>
-                        <input id='themeName' class='form-control' type='field' value='None'>
+                <!-- <form class="form-inline builder-line" id='builder-header' role="form"> -->
+                <form class="well well-sm" id='builder-header' role="form">
+                    <div class="input-set">
+                        <label for='themeName' for='themeName' id="themeNameLabel">Name: </label>
+                        <input id='themeName' name='themeName' class='form-control' type='field' value='None'>
                     </div>
                     
-                    <span class="hSep">|</span> 
-                    
-                    <div class="form-group">
-                        <label for='bstMin'>BST Range: </label>
-                        <input id='bstMin' class='form-control' type='number' value='300' min='100' max='999'>
-                        <div class="panel-inline">
-                            <input id="ex2" type="text" class="span2" value="" data-slider-min="100" data-slider-max="999" data-slider-step="1" data-slider-value="[300,601]"/>
+                    <div class="input-set">
+                        <label for='bstMin' id="bstRangeLabel">BST Range: </label> 
+                        <div class="slider-container">
+                            <input id='bstMin' class='form-control slider-input' type='number' value='300' min='100' max='999'>
+                            <div class="panel-inline slider-holder">
+                                <input id="ex2" type="text" class="span2" value="" data-slider-min="100" data-slider-max="999" data-slider-step="1" data-slider-value="[300,601]"/>
+                            </div>
+                            <input id='bstMax' class='form-control slider-input' type='number' value='601' min='100' max='999'>
                         </div>
-                        <label for='bstMax'> </label>
-                        <input id='bstMax' class='form-control' type='number' value='601' min='100' max='999'>
-                        <!-- <input type="button" class="btn btn-default" id="applyBstBtn" name="applyBST" value="Apply BST" onclick="applyBst()"/> -->
                     </div>
                     
-                    <span class="hSep">|</span> 
-                    
-                    <div class="form-group">
-                        <label for='themeIcon'>Icon: </label>
+                    <div class="input-set">
+                        <label for='themeIcon' id="iconLabel">Icon: </label>
                         <input id='themeIcon' class='form-control' type='number' value='0'>
                     </div>
                     
-                    <span class="hSep">|</span> 
-                    
-                    <div class="btn-group">
+                    <input type="button" id="showRulesButton" class="btn btn-warning compactHidden" name="showRules" value="Edit Rules" data-toggle="modal" data-target="#rulesWindow"/>
+                    <div class="btn-group compactHidden showRulesButton" id="filterButtons">
                         <input type="button" class="btn btn-info" name="toggleMega" value="Toggle Mega" onclick="hideMega()"/>
                         <input type="button" class="btn btn-info" name="toggleForm" value="Toggle Forms" onclick="hideForms()"/>
-                        <!-- <input type="button" class="btn btn-info" name="toggleLegendaries" value="Toggle Legendaries" onclick="hideLegendaries()"/> -->
                     </div>
-                    <input type="button" class="btn btn-warning" name="showRules" value="Edit Rules" data-toggle="modal" data-target="#rulesWindow"/>
-                    <div class="btn-group">
-                        <input type="button" class="btn btn-primary" name="importButton" value="Import theme" data-toggle="modal" data-target="#importWindow"/>
-                        <input type="button" class="btn btn-primary" name="exportButton" value="Export theme" data-toggle="modal" data-target="#exportWindow" onclick="exportTheme()" />
+                    <div class="btn-group btn-group-justified" id="filterButtonsCompact">
+                        <div class="btn-group">
+                            <input type="button" class="btn btn-warning showRulesButton" name="showRules" value="Edit Rules" data-toggle="modal" data-target="#rulesWindow"/>
+                        </div>
+                        <div class="btn-group">
+                            <input type="button" class="btn btn-info" name="toggleMega" value="Toggle Mega" onclick="hideMega()"/>
+                        </div>
+                        <div class="btn-group">
+                            <input type="button" class="btn btn-info" name="toggleForm" value="Toggle Forms" onclick="hideForms()"/>
+                        </div>
                     </div>
-                    <input type="button" class="btn btn-danger pull-right" name="clearButton" id="clearButtton" value="Reset" onclick="importTheme('{}')"/> 
-                    <input type="button" class="btn btn-info pull-right" name="helpButton" id="helpButton" value="Help" data-toggle="modal" data-target="#helpWindow"/> 
                 </form>
                 
                 <div class='well well-sm' id='includeBox'>
