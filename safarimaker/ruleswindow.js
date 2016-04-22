@@ -1,3 +1,4 @@
+var generationList = ["Kanto", "Johto", "Hoenn", "Sinnoh", "Unova", "Kalos"];
 function createRulesUI () {
     var home = $("#homePanel");
     home.addClass("topMargin");
@@ -9,7 +10,47 @@ function createRulesUI () {
     createBuffNerfSlider("Shiny", "shiny", home, "Set a chance for buffed/nerfed Shiny if used as active");
     createBuffNerfSlider("Single-type", "singleType", home, "Set a chance for buffed/nerfed Single-type Pokémon if used as active");
     createBuffNerfSlider("Dual-type", "dualType", home, "Set a chance for buffed/nerfed Dual-type Pokémon if used as active");
-   
+    
+    var generationPanel = $("<div class='panel panel-default'></div>");
+    var generationHeader = $("<div class='panel-heading'><label>Generation</label> </div>");
+    var check = $('<label><input type="checkbox" id="defaultGeneration" name="defaultGeneration" value="Default"> Use default settings </label> ');
+    check.children("input[type=checkbox]").change(function(event) {
+        var obj = $(this);
+        var par = obj.parent().parent().parent();
+        if (obj.prop("checked")) {
+            par.find(".ruleSlider").slider("disable");
+            par.find(".sliderInput").prop("disabled", true);
+        } else {
+            par.find(".ruleSlider").slider("enable");
+            par.find(".sliderInput").prop("disabled", false);
+        }
+    });
+    // var show = $("<span> </span> <a data-toggle='collapse' href='#generationPanel'><span class='glyphicon glyphicon-chevron-down'></span>Show/Hide</a> ");
+    var show = $("<span> </span> <a data-toggle='collapse' href='#generationPanel'>Show/Hide</a> ");
+    
+    var generationContent = $("<div class='panel-body panel-collapse collapse' id='generationPanel'></div>");
+    generationPanel.append(generationHeader);
+    generationHeader.append(check);
+    generationHeader.append(show);
+    home.append(generationPanel);
+    generationPanel.append(generationContent);
+    for (var e = 0; e < generationList.length; e++) {
+        createBuffNerfSlider(generationList[e] + " Pokémon", "generation" + generationList[e], generationContent, "Set a chance for buffed/nerfed " + generationList[e] + " Pokémon if used as active", true);
+    }
+    /* createBuffNerfSlider("Johto Pokémon", "generationJohto", generationContent, "Set a chance for buffed/nerfed Johto Pokémon if used as active", true);
+    createBuffNerfSlider("Hoenn Pokémon", "generationHoenn", generationContent, "Set a chance for buffed/nerfed Hoenn Pokémon if used as active", true);
+    createBuffNerfSlider("Sinnoh Pokémon", "generationSinnoh", generationContent, "Set a chance for buffed/nerfed Sinnoh Pokémon if used as active", true);
+    createBuffNerfSlider("Unova Pokémon", "generationUnova", generationContent, "Set a chance for buffed/nerfed Unova Pokémon if used as active", true);
+    createBuffNerfSlider("Kalos Pokémon", "generationKalos", generationContent, "Set a chance for buffed/nerfed Kalos Pokémon if used as active", true); */
+    /* 
+    "generation": {
+        "kanto": {"nerf": 0.03, "buff": 0.03},
+        "johto": {"nerf": 0.03, "buff": 0.03},
+        "hoenn": {"nerf": 0.03, "buff": 0.03},
+        "sinnoh": {"nerf": 0.03, "buff": 0.03},
+        "unova": {"nerf": 0.03, "buff": 0.03},
+        "kalos": {"nerf": 0.03, "buff": 0.03}
+    }, */
     
     var bstPanels = $("<div class='panel panel-default topMargin'></div>");
     home.append(bstPanels);
@@ -20,7 +61,7 @@ function createRulesUI () {
     bstPanels.append(header);
     bstPanels.append(body);
     
-    var check = $('<label><input type="checkbox" id="defaultBST" name="defaultBST" value="Default"> Use default BST settings</label>');
+    check = $('<label><input type="checkbox" id="defaultBST" name="defaultBST" value="Default"> Use default BST settings</label>');
     header.append(check);
     
     var row = $("<div class='row'></div>");
@@ -379,7 +420,7 @@ function createInputSlider(label, id, container, disabler, hint) {
     });
     return obj;
 }
-function createBuffNerfSlider(label, id, container, hint) {
+function createBuffNerfSlider(label, id, container, hint, noDefaulter) {
     var obj = $("<div class='form-inline slidersTabForms well well-sm'></div>");
     obj.appendTo(container);
     
@@ -389,19 +430,21 @@ function createBuffNerfSlider(label, id, container, hint) {
         obj.append(tip(hint));
     }
     
-    var check = $(' <label><input type="checkbox" id="default'+id+'" name="default'+id+'" value="Default"> Use default settings</label>');
-    obj.append(check);
-    check.children("input[type=checkbox]").change(function(event) {
-        var obj = $(this);
-        var par = obj.parent().parent();
-        if (obj.prop("checked")) {
-            par.find(".ruleSlider").slider("disable");
-            par.find(".sliderInput").prop("disabled", true);
-        } else {
-            par.find(".ruleSlider").slider("enable");
-            par.find(".sliderInput").prop("disabled", false);
-        }
-    });
+    if (!noDefaulter) {
+        var check = $(' <label><input type="checkbox" id="default'+id+'" name="default'+id+'" value="Default"> Use default settings</label>');
+        obj.append(check);
+        check.children("input[type=checkbox]").change(function(event) {
+            var obj = $(this);
+            var par = obj.parent().parent();
+            if (obj.prop("checked")) {
+                par.find(".ruleSlider").slider("disable");
+                par.find(".sliderInput").prop("disabled", true);
+            } else {
+                par.find(".ruleSlider").slider("enable");
+                par.find(".sliderInput").prop("disabled", false);
+            }
+        });
+    }
     obj.append("<br>");
     var slider1 = createInputSlider("Buff", id + "Buff", obj);
     var slider2 = createInputSlider("Nerf", id + "Nerf", obj);
@@ -465,7 +508,7 @@ function showRules() {
 }
 
 function loadRules(rules) {
-    var obj, e, t, holder, val;
+    var obj, e, t, holder, val, g, n;
     if (!rules) {
         obj = $(".rulesRadio[value=default]");
         obj.prop("checked", true);
@@ -628,41 +671,35 @@ function loadRules(rules) {
             holder.find(".ruleSlider[ref=" + t + "]").slider("setValue", 0, true, true);
         }
     }
-    if ("bst" in rules) {
-        obj = $("#defaultBST");
-        obj.prop("checked", rules.bst === "default");
+    if ("generation" in rules) {
+        obj = $("#defaultGeneration");
+        obj.prop("checked", rules.generation === "default");
         obj.trigger("change");
         
-        if (rules.bst !== "default") {
-            val = rules.bst.min || 0;
-            $(".ruleSlider[ref=chanceMinBST]").slider("setValue", rules.bst.minChance * 100, true, true);
-            if (val > 0) {
-                val = rules.bst.min || 0;
-                if (typeof val === "number") {
-                    val = [val, val+1];
+        if (rules.generation !== "default") {
+            var nl, gen;
+            for (g = 0; g < generationList.length; g++) {
+                n = generationList[g];
+                nl = n.toLowerCase();
+                if (nl in rules.generation) {
+                    gen = rules.generation[nl];
+                    val = gen.buff || 0;
+                    $(".ruleSlider[ref=generation" + n + "Buff]").slider("setValue", val * 100, true, true);
+                    
+                    val = gen.nerf || 0;
+                    $(".ruleSlider[ref=generation" + n + "Nerf]").slider("setValue", val * 100, true, true);
                 }
-                $(".dualSlider[ref=minBST]").slider("setValue", val, true, true);
-            }
-            
-            val = rules.bst.maxChance || 0;
-            $(".ruleSlider[ref=chanceMaxBST]").slider("setValue", val * 100, true, true);
-            if (val > 0) {
-                val = rules.bst.max || 0;
-                if (typeof val === "number") {
-                    val = [val, val+1];
-                }
-                $(".dualSlider[ref=maxBST]").slider("setValue", val, true, true);
             }
         }
     } else {
-        obj = $("#defaultBST");
+        obj = $("#defaultGeneration");
         obj.prop("checked", false);
         obj.trigger("change");
-        $(".ruleSlider[ref=chanceMinBST]").slider("setValue", 0, true, true);
-        $(".ruleSlider[ref=chanceMaxBST]").slider("setValue", 0, true, true);
         
-        $(".dualSlider[ref=minBST]").slider("setValue", [230, 400], true, true);
-        $(".dualSlider[ref=maxBST]").slider("setValue", [400, 531], true, true);
+        for (g = 0; g < generationList.length; g++) {
+            $(".ruleSlider[ref=generation" + generationList[g] + "Buff]").slider("setValue", 0, true, true);
+            $(".ruleSlider[ref=generation" + generationList[g] + "Nerf]").slider("setValue", 0, true, true);
+        }
     }
     
     if ("shiny" in rules) {
@@ -902,6 +939,36 @@ function getRules() {
                 rules.dualType = {};
             }
             rules.dualType.buff = (v/100).toFixedNumber(2);
+        }
+    }
+    //Generation settings
+    if ($("#defaultGeneration").prop("checked")) {
+        rules.generation = "default";
+    } else {
+        var gen = {}, n, ln;
+        
+        for (var g = 0; g < generationList.length; g++) {
+            n = generationList[g];
+            ln = n.toLowerCase();
+            c = $(".ruleSlider[ref=generation" + n + "Buff]").slider("getValue");
+            if (c > 0) {
+                if (!gen[ln]) {
+                    gen[ln] = {};
+                }
+                gen[ln].buff = (c/100).toFixedNumber(2);
+            }
+            c = $(".ruleSlider[ref=generation" + n + "Nerf]").slider("getValue");
+            if (c > 0) {
+                if (!gen[ln]) {
+                    gen[ln] = {};
+                }
+                gen[ln].nerf = (c/100).toFixedNumber(2);
+            }
+        }
+        
+        for (g in gen) {
+            rules.generation = gen;
+            break;
         }
     }
     //BST settings

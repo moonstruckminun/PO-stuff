@@ -256,7 +256,7 @@ function loadData(poke, types1, types2, stats) {
     stats = toRawObject(stats);
     
     var size = pokeRaw.length, pkmn, t1, t2, bst,  e;
-    // var size = 40, pkmn, t1, t2, bst,  e;
+    // size = 40;
     for (e = 1; e < size; e++) {
         pkmn = convertRawValue(pokeRaw[e]);
         
