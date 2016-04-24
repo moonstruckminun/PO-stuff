@@ -37,20 +37,6 @@ function createRulesUI () {
     for (var e = 0; e < generationList.length; e++) {
         createBuffNerfSlider(generationList[e] + " Pokémon", "generation" + generationList[e], generationContent, "Set a chance for buffed/nerfed " + generationList[e] + " Pokémon if used as active", true);
     }
-    /* createBuffNerfSlider("Johto Pokémon", "generationJohto", generationContent, "Set a chance for buffed/nerfed Johto Pokémon if used as active", true);
-    createBuffNerfSlider("Hoenn Pokémon", "generationHoenn", generationContent, "Set a chance for buffed/nerfed Hoenn Pokémon if used as active", true);
-    createBuffNerfSlider("Sinnoh Pokémon", "generationSinnoh", generationContent, "Set a chance for buffed/nerfed Sinnoh Pokémon if used as active", true);
-    createBuffNerfSlider("Unova Pokémon", "generationUnova", generationContent, "Set a chance for buffed/nerfed Unova Pokémon if used as active", true);
-    createBuffNerfSlider("Kalos Pokémon", "generationKalos", generationContent, "Set a chance for buffed/nerfed Kalos Pokémon if used as active", true); */
-    /* 
-    "generation": {
-        "kanto": {"nerf": 0.03, "buff": 0.03},
-        "johto": {"nerf": 0.03, "buff": 0.03},
-        "hoenn": {"nerf": 0.03, "buff": 0.03},
-        "sinnoh": {"nerf": 0.03, "buff": 0.03},
-        "unova": {"nerf": 0.03, "buff": 0.03},
-        "kalos": {"nerf": 0.03, "buff": 0.03}
-    }, */
     
     var bstPanels = $("<div class='panel panel-default topMargin'></div>");
     home.append(bstPanels);
