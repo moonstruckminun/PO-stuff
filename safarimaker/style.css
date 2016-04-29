@@ -31,6 +31,11 @@
     -webkit-transition: background 0.5s;
     transition: background 0.5s;
 }
+.alert-danger span.included {
+    /* background:#5CB85C; */
+    padding: 2px 3px;
+    color: white;
+}
 .excluded {
     /* background:#D55C16; */
     background:#D9534F;
