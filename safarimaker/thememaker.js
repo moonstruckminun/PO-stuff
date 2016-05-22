@@ -145,6 +145,7 @@ $(document).ready(function () {
                         updateIncluded();
                         id = species(num) + "-" + forme(num);
                         markPokemon(id);
+                        updateCount()
                     }
                 break;
                 case 1:
@@ -153,6 +154,7 @@ $(document).ready(function () {
                         updateIncluded();
                         id = species(num) + "-" + forme(num);
                         markPokemon(id);
+                        updateCount()
                     }
                 break;
                 default:
@@ -174,6 +176,7 @@ $(document).ready(function () {
                         updateIncluded();
                         id = species(num) + "-" + forme(num);
                         markPokemon(id);
+                        updateCount()
                     }
                 break;
                 case 3:
@@ -182,6 +185,7 @@ $(document).ready(function () {
                         updateIncluded();
                         id = species(num) + "-" + forme(num);
                         markPokemon(id);
+                        updateCount()
                     }
                 break;
                 default:
@@ -347,6 +351,7 @@ function buildPicker(){
                 updateIncluded();
         }
         markPokemon(id);
+        updateCount()
 	});
 }
 function getValFromUrl(url, obj) {
@@ -420,6 +425,7 @@ function setForCustomBST(id, value) {
             if (!isNaN(val)) {
                 theme.customBST[data.index] = val;
                 markPokemon(id);
+                updateCount()
             }
         });
         $(".bstInput.form-control").on("keypress", function(event) {
@@ -443,12 +449,7 @@ function checkAll() {
     for (var e in pokemon) {
         markPokemon(e);
     }
-    /* loop(pokeIndex.length, function(i) {
-        markPokemon(pokeIndex[i]);
-    }); */
-    /* repeat(pokeIndex.length, function(i) {
-        markPokemon(pokeIndex[i]);
-    }); */
+    updateCount();
 }
 function repeat (n, f) {
     var i = 0, end = {}, ret = null;
@@ -468,7 +469,7 @@ function markPokemon(pokeId) {
     var icon = allPickers[pokeId];
     if (validForTheme(pokeId)) {
         if (!icon.hasClass("included")) {
-            console.log("Including " + pokeId);
+            // console.log("Including " + pokeId);
             icon.addClass("included");
             icon.removeClass("excluded");
         }
@@ -486,6 +487,16 @@ function markPokemon(pokeId) {
             icon.removeClass("included");
         }
     }
+}
+function updateCount() {
+    var c = 0;
+    for (var e in allPickers) {
+        if (allPickers[e].hasClass("included")) {
+            c++;
+        }
+    }
+    
+    $("#actualSpawnCount").text(c);
 }
 
 function validForTheme(pokeId) {
@@ -529,6 +540,7 @@ function updateIncluded() {
     for (e = 0; e < theme.include.length; e++) {
         num = theme.include[e];
         id = species(num) + "-" + forme(num);
+        // console.log("Adding id " + id + " ("+ num + ")");
         out.push("<span class='label label-success includedLabel' value='" + num + "'>" + pokemon[id].name + "</span>");
     }
     for (e = 0; e < theme.exclude.length; e++) {
