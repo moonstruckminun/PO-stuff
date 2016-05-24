@@ -495,6 +495,7 @@ function showRules() {
 
 function loadRules(rules) {
     var obj, e, t, holder, val, g, n;
+    var setCustom = true;
     if (!rules) {
         obj = $(".rulesRadio[value=default]");
         obj.prop("checked", true);
@@ -503,6 +504,7 @@ function loadRules(rules) {
         $(".rulesRadio[value=none]").prop("checked", false);
         // return;
         rules = {};
+        setCustom = false;
     } else if (Object.keys(rules).length === 0) {
         $(".rulesRadio[value=default]").prop("checked", false);
         $(".rulesRadio[value=custom]").prop("checked", false);
@@ -511,11 +513,14 @@ function loadRules(rules) {
         obj.trigger("change");
         // return;
         rules = {};
+        setCustom = false;
     }
     
     obj = $(".rulesRadio[value=custom]");
-    obj.prop("checked", true);
-    obj.trigger("change");
+    if (setCustom) {
+        obj.prop("checked", true);
+        obj.trigger("change");
+    }
     
     if ("noLegendaries" in rules) {
         obj = $("#defaultnoLegendaries");
