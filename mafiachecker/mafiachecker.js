@@ -241,7 +241,7 @@ function mafiaChecker() {
     function Theme(){}
     Theme.prototype.addSide = function(obj) {
         var yourSide = (obj.side) ? 'Your side "' + obj.side + '"'  : 'One of your sides';
-        checkAttributes(obj, ["side", "translation"], ["winmsg", "hide"], yourSide);
+        checkAttributes(obj, ["side", "translation"], ["winmsg", "color", "hide"], yourSide);
         if (obj.side in this.sideTranslations) {
             addFatalError("Your theme has a repeated side \"" + obj.side + "\".");
         }
@@ -250,6 +250,7 @@ function mafiaChecker() {
         checkType(obj.side, ["string"], yourSide + "'s 'side' attribute");
         checkType(obj.translation, ["string"], yourSide + "'s 'translation' attribute");
         checkType(obj.winmsg, ["string"], yourSide + "'s 'winmsg' attribute");
+        checkType(obj.color, ["string"], yourSide + "'s 'color' attribute");
         
         if (obj.side) {
             this.correctSides.push(obj.side);
@@ -658,7 +659,7 @@ function mafiaChecker() {
                     }
                 }
                 if (checkType(role.actions.standby, ["object"], act + ".standby")) {
-                    var appendActions = ["newRole", "canConvert", "silent", "convertmsg", "convertusermsg", "tarmsg", "copyAs", "canCopy", "copymsg", "copyusermsg", "convertRoles", "singlemassconvertmsg", "massconvertmsg" ];
+                    var appendActions = ["newRole", "canConvert", "silent", "convertmsg", "convertusermsg", "tarmsg", "copyAs", "canCopy", "copymsg", "copyusermsg", "convertRoles", "singlemassconvertmsg", "massconvertmsg", "macro" ];
                     for (e in role.actions.standby) {
                         action = role.actions.standby[e];
                         comm = act + ".standby." + e;
@@ -886,7 +887,7 @@ function mafiaChecker() {
                 
                 //Defensive Modes
                 for (e in possibleNightActions) {
-                    if (possibleNightActions[e] in role.actions && typeof role.actions[possibleNightActions[e]] !== "function" && checkType(role.actions[possibleNightActions[e]], ["object"], act + "." + possibleNightActions[e]) ) {
+                    if (possibleNightActions[e] in role.actions && typeof role.actions[possibleNightActions[e]] !== "function" && checkType(role.actions[possibleNightActions[e]], ["object"], act + "." + possibleNightActions[e])) {
                         command = possibleNightActions[e];
                         action = role.actions[command];
                         comm = act + "." + command;
@@ -985,9 +986,16 @@ function mafiaChecker() {
                         } else {
                             checkAttributes(action, ["mode"], ["msg", "targetmsg", "expend"], comm);
                             if (checkType(action.mode, ["object"], comm + ".mode")) {
-                                checkAttributes(action.mode, [], ["evadeCharges", "evadeChance", "ignore", "revenge", "evasionmsg"], comm + ".mode");
+                                checkAttributes(action.mode, [], ["evadeCharges", "evadeChance", "ignore", "ignoreChance", "revenge", "evasionmsg"], comm + ".mode");
                                 
                                 checkType(action.mode.evadeChance, ["number"], comm + ".mode.evadeChance");
+                                
+                                if (checkType(action.mode.ignoreChance, ["object"], comm + ".mode.ignoreChance")) {
+                                    for (var rr in action.mode.ignoreChance) {
+                                        checkType(rr, ["number"], comm + ".mode.ignoreChance." + rr);
+                                        checkType(action.mode.ignoreChance[rr], ["array"], comm + ".mode.ignoreChance." + action.mode.ignoreChance[rr]);
+                                    }
+                                }
                                 
                                 if (checkType(action.mode.evadeCharges, ["number", "string"], comm + ".mode.evadeCharges")) {
                                     if (typeof action.mode.evadeCharges == "string") {
@@ -1301,6 +1309,18 @@ function mafiaChecker() {
             }
             if ("poisonmsg" in action) {
                 addMinorError(comm + " has both 'poisonmsg' and 'singlepoisonmsg', so 'poisonmsg' won't be used");
+            }
+        }
+        
+        /* onDeath.detoxRoles related attributes */
+        if (checkType(action.detoxRoles, ["array"], comm + ".detoxRoles")) {
+            for (var i = 0; i < action.detoxRoles.length; ++i) {
+                checkValidRole(action.detoxRoles[i], comm + ".detoxRoles");
+            }
+        }
+        if (checkType(action.detoxMsg, ["string"], comm + ".detoxMsg")) {
+            if (!("detoxRoles" in action)) {
+                addMinorError("'detoxMsg' found at " + comm + ", but there's no 'detoxRoles'");
             }
         }
         
